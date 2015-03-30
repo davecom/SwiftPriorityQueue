@@ -67,13 +67,17 @@ class PriorityQueue<T: Comparable>: Printable, GeneratorType, SequenceType, Coll
         return heap.isEmpty
     }
     
-    /// Add a new element onto the Priority Queue.
+    /// Add a new element onto the Priority Queue. O(lg n)
+    ///
+    /// :param: element The element to be inserted into the Priority Queue.
     func push(element: T) {
         heap.append(element)
         swim((heap.count - 1))
     }
     
-    /// Remove and return the element with the highest priority (or lowest if ascending).
+    /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
+    ///
+    /// :returns: The element with the highest priority in the Priority Queue, or nil if the PriorityQueue is empty.
     func pop() -> T? {
         if heap.isEmpty {
             return nil;
@@ -83,6 +87,16 @@ class PriorityQueue<T: Comparable>: Printable, GeneratorType, SequenceType, Coll
         sink(0)
         
         return temp
+    }
+    
+    /// Get a look at the current highest priority item, without removing it. O(1)
+    ///
+    /// :returns: The element with the highest priority in the PriorityQueue, or nil if the PriorityQueue is empty.
+    func peek() -> T? {
+        if heap.isEmpty {
+            return nil;
+        }
+        return heap[0]
     }
     
     /// Eliminate all of the elements from the Priority Queue.
