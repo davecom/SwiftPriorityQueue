@@ -24,7 +24,12 @@
 
 // This code was inspired by Section 2.4 of Algorithms by Sedgewick & Wayne, 4th Edition
 
-class PriorityQueue<T: Comparable>: Printable, GeneratorType, SequenceType {
+/// A PriorityQueue takes objects to be pushed of any type that implements Comparable.
+/// It will pop the objects in the order that they would be sorted. A pop() or a push()
+/// can be accomplished in O(lg n) time. It can be specified whether the objects should
+/// be popped in ascending or descending order (Max Priority Queue or Min Priority Queue)
+/// at the time of initialization.
+class PriorityQueue<T: Comparable>: Printable, GeneratorType, SequenceType, CollectionType {
     private final var heap: [T] = []
     private let contrast: (T, T) -> Bool
     
@@ -118,7 +123,10 @@ class PriorityQueue<T: Comparable>: Printable, GeneratorType, SequenceType {
     //Implement GeneratorType
     typealias Element = T
     func next() -> Element? {
-        return pop()
+        if let e = pop() {
+            return e
+        }
+        return nil
     }
     
     //Implement SequenceType
@@ -127,4 +135,18 @@ class PriorityQueue<T: Comparable>: Printable, GeneratorType, SequenceType {
         return self
     }
     
+    //Implement CollectionType
+    typealias Index = Int
+    
+    var startIndex: Int {
+        return 0
+    }
+    
+    var endIndex: Int {
+        return count
+    }
+    
+    subscript(i: Int) -> T {
+        return heap[i]
+    }
 }
