@@ -13,6 +13,7 @@
 		553948361AC6495600666559 /* SwiftPriorityQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */; };
 		553948401AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */; };
 		553948411AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */; };
+		5564AFFB1AD509E8008CF6EF /* astar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5564AFFA1AD509E8008CF6EF /* astar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		553948341AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftPriorityQueueTests.swift; sourceTree = "<group>"; };
 		5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPriorityQueue.swift; sourceTree = "<group>"; };
+		5564AFFA1AD509E8008CF6EF /* astar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = astar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			children = (
 				553948241AC6495600666559 /* AppDelegate.swift */,
 				5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */,
+				5564AFFA1AD509E8008CF6EF /* astar.swift */,
 				553948261AC6495600666559 /* Images.xcassets */,
 				553948281AC6495600666559 /* MainMenu.xib */,
 				553948221AC6495600666559 /* Supporting Files */,
@@ -210,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				553948251AC6495600666559 /* AppDelegate.swift in Sources */,
+				5564AFFB1AD509E8008CF6EF /* astar.swift in Sources */,
 				553948401AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
