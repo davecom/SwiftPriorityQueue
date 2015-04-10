@@ -19,7 +19,7 @@ Simply copy `SwiftPriorityQueue.swift` into your project.
 There is a large amount of documentation in the source code using the standard Swift documentation technique (compatible with Jazzy).  Essentially though, SwiftPriorityQueue has the three critical methods you'd expect - push(), pop(), and peek().
 
 ### Initialization
-When you create a new `PriorityQueue` you can optionally specify whether the priority queue is ascending or descending. What does this mean? If the priority queue is ascending, its smallest values (as determined by their implementation of `Comparable` aka `<`) will be popped first, and if it's descending, it's largest values will be popped first.
+When you create a new `PriorityQueue` you can optionally specify whether the priority queue is ascending or descending. What does this mean? If the priority queue is ascending, its smallest values (as determined by their implementation of `Comparable` aka `<`) will be popped first, and if it's descending, its largest values will be popped first.
 ```
 var pq: PriorityQueue<String> = PriorityQueue<String>(ascending: true)
 ```
