@@ -25,7 +25,7 @@ var pq: PriorityQueue<String> = PriorityQueue<String>(ascending: true)
 ```
 You can also provide an array of starting values to be pushed sequentially immediately into the priority queue.
 ```
-var pq: PriorityQueue<Int> = PriorityQueue<Int>(startingValues: [6, 2, 3, 235, 4, 500)
+var pq: PriorityQueue<Int> = PriorityQueue<Int>(startingValues: [6, 2, 3, 235, 4, 500])
 ```
 Or you can specify both.
 ```
