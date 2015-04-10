@@ -36,8 +36,8 @@ Or you can specify neither. By default a `PriorityQueue` is decsending and empty
 ### Methods
 `PriorityQueue` has all of the standard methods you'd expect a priority queue data structure to have.
 * `push(element: T)` - Puts an element into the priority queue. O(lg n)
-* `pop() -> T?` - Returns and removes the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty.
-* `peek() -> T?` - Returns the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty.
+* `pop() -> T?` - Returns and removes the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(lg n)
+* `peek() -> T?` - Returns the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(1)
 * `clear()` - Removes all elements from the priority queue.
 
 ### Properties
