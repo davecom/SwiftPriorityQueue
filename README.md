@@ -10,7 +10,7 @@ Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) 
 * Classic binary heap implementation with O(lg n) pushes and pops
 * Iterable through standard Swift for...in loops (implements SequenceType and GeneratorType)
 * In-source documentation
-* A maze solving astar based example program
+* A fun maze solving A* based example program
 
 ## Installation
 Simply copy `SwiftPriorityQueue.swift` into your project.
