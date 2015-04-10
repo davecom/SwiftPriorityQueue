@@ -2,9 +2,27 @@
 //  astar.swift
 //  SwiftPriorityQueue
 //
-//  Created by David Kopec on 4/8/15.
-//  Copyright (c) 2015 Oak Snow Consulting. All rights reserved.
+//  Copyright (c) 2015 David Kopec
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+
+// This is an example of astar that uses SwiftPriorityQueue
 
 class Node<T>: Comparable, Hashable {
     let state: T
@@ -55,21 +73,24 @@ func backtrack<T>(goalNode: Node<T>) -> [T] {
 /// :param: heuristicFn A function that makes an underestimate of distance from a state to the goal.
 /// :returns: A path from the start state to a goal state as an array.
 func astar<T: Hashable>(initialState: T, goalTestFn: (T) -> Bool, successorFn: (T) -> [T], heuristicFn: (T) -> Float) -> [T]? {
-    var frontier = PriorityQueue(startingValues: [Node(state: initialState, parent: nil, cost: 0, heuristic: 0)])
+    var frontier = PriorityQueue(ascending: true, startingValues: [Node(state: initialState, parent: nil, cost: 0, heuristic: heuristicFn(initialState))])
     var explored = Dictionary<T, Float>()
     explored[initialState] = 0
+    var nodesSearched: Int = 0
     
     while !frontier.isEmpty {
+        nodesSearched++
         let currentNode = frontier.pop()!  // we know if there are still items, we can pop one
         let currentState = currentNode.state
         
         if goalTestFn(currentState) {
+            println("Searched \(nodesSearched) nodes.")
             return backtrack(currentNode)
         }
         
         for child in successorFn(currentState) {
             let newcost = currentNode.cost + 1  //1 assumes a grid, there should be a cost function
-            if explored[child] == nil || explored[child] > newcost {
+            if (explored[child] == nil) || (explored[child] > newcost) {
                 explored[child] = newcost
                 frontier.push(Node(state: child, parent: currentNode, cost: newcost, heuristic: heuristicFn(child)))
             }
