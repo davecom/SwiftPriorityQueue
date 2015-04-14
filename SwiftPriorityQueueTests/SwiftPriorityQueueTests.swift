@@ -48,4 +48,19 @@ class SwiftPriorityQueueTests: XCTestCase {
         XCTAssertEqual(expected, actual, "Basic 10 Integer Array Test Pass")
     }
     
+    func testString() {
+        var pq: PriorityQueue<String> = PriorityQueue<String>()
+        for var s: String = "a"; s <= "aaaaa"; s += "a" {
+            pq.push(s)
+        }
+        
+        let expected: [String] = ["aaaaa", "aaaa", "aaa", "aa", "a"]
+        var actual: [String] = []
+        for i in pq {
+            actual.append(i)
+        }
+        
+        XCTAssertEqual(expected, actual, "Basic 5 String Array Test Pass")
+    }
+    
 }
