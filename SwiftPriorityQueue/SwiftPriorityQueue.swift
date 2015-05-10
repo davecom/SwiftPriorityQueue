@@ -110,18 +110,21 @@ struct PriorityQueue<T: Comparable> {
     }
 }
 
+// MARK: - GeneratorType
 extension PriorityQueue: GeneratorType {
     
     typealias Element = T
     mutating func next() -> Element? { return pop() }
 }
 
+// MARK: - SequenceType
 extension PriorityQueue: SequenceType {
     
     typealias Generator = PriorityQueue
     func generate() -> Generator { return self }
 }
 
+// MARK: - CollectionType
 extension PriorityQueue: CollectionType {
     
     typealias Index = Int
@@ -132,6 +135,7 @@ extension PriorityQueue: CollectionType {
     subscript(i: Int) -> T { return heap[i] }
 }
 
+// MARK: - Printable, DebugPrintable
 extension PriorityQueue: Printable, DebugPrintable {
     
     var description: String { return heap.description }
