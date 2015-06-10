@@ -29,12 +29,12 @@
 /// can be accomplished in O(lg n) time. It can be specified whether the objects should
 /// be popped in ascending or descending order (Max Priority Queue or Min Priority Queue)
 /// at the time of initialization.
-struct PriorityQueue<T: Comparable> {
+public struct PriorityQueue<T: Comparable> {
     
     private var heap = [T]()
     private let ordered: (T, T) -> Bool
     
-    init(ascending: Bool = false, startingValues: [T] = []) {
+    public init(ascending: Bool = false, startingValues: [T] = []) {
         
         if ascending {
             ordered = { $0 > $1 }
@@ -46,15 +46,15 @@ struct PriorityQueue<T: Comparable> {
     }
     
     /// How many elements the Priority Queue stores
-    var count: Int { return heap.count }
+    public var count: Int { return heap.count }
     
     /// true if and only if the Priority Queue is empty
-    var isEmpty: Bool { return heap.isEmpty }
+    public var isEmpty: Bool { return heap.isEmpty }
     
     /// Add a new element onto the Priority Queue. O(lg n)
     ///
     /// :param: element The element to be inserted into the Priority Queue.
-    mutating func push(element: T) {
+    public mutating func push(element: T) {
         heap.append(element)
         swim(heap.count - 1)
     }
@@ -62,7 +62,7 @@ struct PriorityQueue<T: Comparable> {
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
     ///
     /// :returns: The element with the highest priority in the Priority Queue, or nil if the PriorityQueue is empty.
-    mutating func pop() -> T? {
+    public mutating func pop() -> T? {
         
         if heap.isEmpty { return nil }
         
@@ -76,12 +76,12 @@ struct PriorityQueue<T: Comparable> {
     /// Get a look at the current highest priority item, without removing it. O(1)
     ///
     /// :returns: The element with the highest priority in the PriorityQueue, or nil if the PriorityQueue is empty.
-    func peek() -> T? {
+    public func peek() -> T? {
         return heap.first
     }
     
     /// Eliminate all of the elements from the Priority Queue.
-    mutating func clear() {
+    public mutating func clear() {
         heap.removeAll(keepCapacity: false)
     }
     
@@ -114,14 +114,14 @@ struct PriorityQueue<T: Comparable> {
 extension PriorityQueue: GeneratorType {
     
     typealias Element = T
-    mutating func next() -> Element? { return pop() }
+    mutating public func next() -> Element? { return pop() }
 }
 
 // MARK: - SequenceType
 extension PriorityQueue: SequenceType {
     
     typealias Generator = PriorityQueue
-    func generate() -> Generator { return self }
+    public func generate() -> Generator { return self }
 }
 
 // MARK: - CollectionType
@@ -129,15 +129,15 @@ extension PriorityQueue: CollectionType {
     
     typealias Index = Int
     
-    var startIndex: Int { return heap.startIndex }
-    var endIndex: Int { return heap.endIndex }
+    public var startIndex: Int { return heap.startIndex }
+    public var endIndex: Int { return heap.endIndex }
     
-    subscript(i: Int) -> T { return heap[i] }
+    public subscript(i: Int) -> T { return heap[i] }
 }
 
 // MARK: - Printable, DebugPrintable
 extension PriorityQueue: Printable, DebugPrintable {
     
-    var description: String { return heap.description }
-    var debugDescription: String { return heap.debugDescription }
+    public var description: String { return heap.description }
+    public var debugDescription: String { return heap.debugDescription }
 }
