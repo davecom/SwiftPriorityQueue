@@ -75,7 +75,7 @@ class MazeView: NSView {
             cellLayers.append([CALayer]())
             position.append([Cell]())
             for var j = 0; j < NUM_COLS; j++ {
-                var temp: CALayer = CALayer()
+                let temp: CALayer = CALayer()
                 var cell: Cell = .Empty
                 let x = arc4random_uniform(5)
                 if x == 0 {
@@ -170,7 +170,7 @@ class MazeView: NSView {
                 return Float(xdist + ydist)
             }
             
-            if let pathresult:[Point] = astar(start, goalTest, successors, heuristic) {
+            if let pathresult:[Point] = astar(start, goalTestFn: goalTest, successorFn: successors, heuristicFn: heuristic) {
                 path = pathresult
                 for p in path {
                     if p != start && p != goal {

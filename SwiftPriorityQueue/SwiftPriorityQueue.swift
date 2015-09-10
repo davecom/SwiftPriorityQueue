@@ -53,7 +53,7 @@ public struct PriorityQueue<T: Comparable> {
     
     /// Add a new element onto the Priority Queue. O(lg n)
     ///
-    /// :param: element The element to be inserted into the Priority Queue.
+    /// - parameter element: The element to be inserted into the Priority Queue.
     public mutating func push(element: T) {
         heap.append(element)
         swim(heap.count - 1)
@@ -61,11 +61,12 @@ public struct PriorityQueue<T: Comparable> {
     
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
     ///
-    /// :returns: The element with the highest priority in the Priority Queue, or nil if the PriorityQueue is empty.
+    /// - returns: The element with the highest priority in the Priority Queue, or nil if the PriorityQueue is empty.
     public mutating func pop() -> T? {
         
         if heap.isEmpty { return nil }
-        
+        if heap.count == 1 { return heap.removeFirst() }  // added for Swift 2 compatibility
+        // so as not to call swap() with two instances of the same location
         swap(&heap[0], &heap[heap.count - 1])
         let temp = heap.removeLast()
         sink(0)
@@ -75,7 +76,7 @@ public struct PriorityQueue<T: Comparable> {
     
     /// Get a look at the current highest priority item, without removing it. O(1)
     ///
-    /// :returns: The element with the highest priority in the PriorityQueue, or nil if the PriorityQueue is empty.
+    /// - returns: The element with the highest priority in the PriorityQueue, or nil if the PriorityQueue is empty.
     public func peek() -> T? {
         return heap.first
     }
@@ -113,21 +114,21 @@ public struct PriorityQueue<T: Comparable> {
 // MARK: - GeneratorType
 extension PriorityQueue: GeneratorType {
     
-    typealias Element = T
+    public typealias Element = T
     mutating public func next() -> Element? { return pop() }
 }
 
 // MARK: - SequenceType
 extension PriorityQueue: SequenceType {
     
-    typealias Generator = PriorityQueue
+    public typealias Generator = PriorityQueue
     public func generate() -> Generator { return self }
 }
 
 // MARK: - CollectionType
 extension PriorityQueue: CollectionType {
     
-    typealias Index = Int
+    public typealias Index = Int
     
     public var startIndex: Int { return heap.startIndex }
     public var endIndex: Int { return heap.endIndex }
@@ -136,7 +137,7 @@ extension PriorityQueue: CollectionType {
 }
 
 // MARK: - Printable, DebugPrintable
-extension PriorityQueue: Printable, DebugPrintable {
+extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
     
     public var description: String { return heap.description }
     public var debugDescription: String { return heap.debugDescription }

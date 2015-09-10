@@ -41,8 +41,8 @@ class SwiftPriorityQueueTests: XCTestCase {
         
         let expected: [Int] = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
         var actual: [Int] = []
-        for i in pq {
-            actual.append(i)
+        for j in pq {
+            actual.append(j)
         }
         
         XCTAssertEqual(expected, actual, "Basic 10 Integer Array Test Pass")

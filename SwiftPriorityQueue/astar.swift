@@ -49,8 +49,8 @@ func == <T>(lhs: Node<T>, rhs: Node<T>) -> Bool {
 
 /// Formulate a result path as an array from a goal node found in an astar search
 ///
-/// :param: startNode The goal node found from an astar search.
-/// :returns: An array containing the states to get from the start to the goal.
+/// - parameter startNode: The goal node found from an astar search.
+/// - returns: An array containing the states to get from the start to the goal.
 func backtrack<T>(goalNode: Node<T>) -> [T] {
     var sol: [T] = []
     var node = goalNode
@@ -67,11 +67,11 @@ func backtrack<T>(goalNode: Node<T>) -> [T] {
 
 /// Find the shortest path from a start state to a goal state.
 ///
-/// :param: initialState The state that we are starting from.
-/// :param: goalTestFn A function that determines whether a state is the goal state.
-/// :param: successorFn A function that finds the next states from a state.
-/// :param: heuristicFn A function that makes an underestimate of distance from a state to the goal.
-/// :returns: A path from the start state to a goal state as an array.
+/// - parameter initialState: The state that we are starting from.
+/// - parameter goalTestFn: A function that determines whether a state is the goal state.
+/// - parameter successorFn: A function that finds the next states from a state.
+/// - parameter heuristicFn: A function that makes an underestimate of distance from a state to the goal.
+/// - returns: A path from the start state to a goal state as an array.
 func astar<T: Hashable>(initialState: T, goalTestFn: (T) -> Bool, successorFn: (T) -> [T], heuristicFn: (T) -> Float) -> [T]? {
     var frontier = PriorityQueue(ascending: true, startingValues: [Node(state: initialState, parent: nil, cost: 0, heuristic: heuristicFn(initialState))])
     var explored = Dictionary<T, Float>()
@@ -84,7 +84,7 @@ func astar<T: Hashable>(initialState: T, goalTestFn: (T) -> Bool, successorFn: (
         let currentState = currentNode.state
         
         if goalTestFn(currentState) {
-            println("Searched \(nodesSearched) nodes.")
+            print("Searched \(nodesSearched) nodes.")
             return backtrack(currentNode)
         }
         
