@@ -8,30 +8,9 @@
 
 import Cocoa
 import XCTest
+import Foundation
 
 class SwiftPriorityQueueTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
-    }
     
     func testBasic() {
         var pq: PriorityQueue<Int> = PriorityQueue<Int>()
@@ -61,6 +40,19 @@ class SwiftPriorityQueueTests: XCTestCase {
         }
         
         XCTAssertEqual(expected, actual, "Basic 5 String Array Test Pass")
+    }
+    
+    func testSetEquiv() {
+        for _ in 0..<100 {
+            var s = Set((0..<(arc4random_uniform(100))).map { _ in arc4random_uniform(UInt32.max) })
+            var q = PriorityQueue.init(startingValues: Array(s))
+            XCTAssertEqual(s.count, q.count, "Incorrect count with elements: " + s.description)
+            while let se = s.maxElement() {
+                XCTAssertEqual(se, q.pop(), "Incorrect max item with elements: " + s.description)
+                s.remove(se)
+            }
+            XCTAssert(q.isEmpty, "Is not empty. Still contains: " + q.description)
+        }
     }
     
 }
