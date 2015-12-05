@@ -136,7 +136,7 @@ extension PriorityQueue: CollectionType {
     public subscript(i: Int) -> T { return heap[i] }
 }
 
-// MARK: - Printable, DebugPrintable
+// MARK: - CustomStringConvertible, CustomDebugStringConvertible
 extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
     
     public var description: String { return heap.description }
