@@ -51,7 +51,7 @@ for item in pq {  // pq is a PriorityQueue<String>
     print(item)
 }
 ```
-When you do this, every item from the `PriorityQueue` is popped in order. `PriorityQueue` also implements `Printable`.
+When you do this, every item from the `PriorityQueue` is popped in order. `PriorityQueue` also implements `CustomStringConvertible` and `CustomDebugStringConvertible`.
 ```
 print(pq)
 ```
