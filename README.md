@@ -48,12 +48,12 @@ Or you can specify neither. By default a `PriorityQueue` is decsending and empty
 `PriorityQueue` implements `SequenceType`, `CollectionType` and `GeneratorType` so you can treat `PriorityQueue` like any other Swift sequence/collection. This means you can use Swift standard library fucntions on a `PriorityQueue` and iterate through a `PriorityQueue` like this:
 ```
 for item in pq {  // pq is a PriorityQueue<String>
-    println(item)
+    print(item)
 }
 ```
 When you do this, every item from the `PriorityQueue` is popped in order. `PriorityQueue` also implements `Printable`.
 ```
-println(pq)
+print(pq)
 ```
 Note: `PriorityQueue` is *not* thread-safe (do not manipulate it from multiple threads at once).
 
