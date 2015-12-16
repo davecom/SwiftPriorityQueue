@@ -71,10 +71,10 @@ class MazeView: NSView {
         wantsLayer = true
         let width: CGFloat = self.bounds.size.width
         let height: CGFloat = self.bounds.size.height
-        for var i = 0; i < NUM_ROWS; i++ {
+        for i in 0..<NUM_ROWS {
             cellLayers.append([CALayer]())
             position.append([Cell]())
-            for var j = 0; j < NUM_COLS; j++ {
+            for j in 0..<NUM_COLS {
                 let temp: CALayer = CALayer()
                 var cell: Cell = .Empty
                 let x = arc4random_uniform(5)
