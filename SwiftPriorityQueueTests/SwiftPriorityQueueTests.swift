@@ -14,7 +14,7 @@ class SwiftPriorityQueueTests: XCTestCase {
     
     func testBasic() {
         var pq: PriorityQueue<Int> = PriorityQueue<Int>()
-        for var i: Int = 0; i < 10; i++ {
+        for i in 0..<10 {
             pq.push(i);
         }
         
@@ -29,8 +29,10 @@ class SwiftPriorityQueueTests: XCTestCase {
     
     func testString() {
         var pq: PriorityQueue<String> = PriorityQueue<String>()
-        for var s: String = "a"; s <= "aaaaa"; s += "a" {
+        var s = "a"
+        while (s < "aaaaaa") {
             pq.push(s)
+            s += "a"
         }
         
         let expected: [String] = ["aaaaa", "aaaa", "aaa", "aa", "a"]

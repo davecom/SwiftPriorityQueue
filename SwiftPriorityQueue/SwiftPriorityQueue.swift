@@ -93,7 +93,7 @@ public struct PriorityQueue<T: Comparable> {
             
             var j = 2 * index + 1
             
-            if j < (heap.count - 1) && ordered(heap[j], heap[j + 1]) { j++ }
+            if j < (heap.count - 1) && ordered(heap[j], heap[j + 1]) { j += 1 }
             if !ordered(heap[index], heap[j]) { break }
             
             swap(&heap[index], &heap[j])

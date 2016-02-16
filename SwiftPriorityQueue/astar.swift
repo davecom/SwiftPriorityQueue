@@ -79,7 +79,7 @@ func astar<T: Hashable>(initialState: T, goalTestFn: (T) -> Bool, successorFn: (
     var nodesSearched: Int = 0
     
     while !frontier.isEmpty {
-        nodesSearched++
+        nodesSearched += 1
         let currentNode = frontier.pop()!  // we know if there are still items, we can pop one
         let currentState = currentNode.state
         
