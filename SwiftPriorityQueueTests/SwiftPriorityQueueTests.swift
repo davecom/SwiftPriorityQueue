@@ -57,4 +57,21 @@ class SwiftPriorityQueueTests: XCTestCase {
         }
     }
     
+    func testClear() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
+        for i in 0..<10 {
+            pq.push(i);
+        }
+        pq.clear()
+        XCTAssert(pq.isEmpty, "Is not empty. Still contains: " + pq.description)
+    }
+    
+    func testPeek() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
+        pq.push(1)
+        pq.push(5)
+        pq.push(3)
+        XCTAssertEqual(pq.peek(), 5, "Peek didn't return top element: " + pq.description)
+    }
+    
 }
