@@ -35,7 +35,7 @@
 		5539482F1AC6495600666559 /* SwiftPriorityQueueTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftPriorityQueueTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		553948341AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftPriorityQueueTests.swift; sourceTree = "<group>"; };
-		5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPriorityQueue.swift; sourceTree = "<group>"; };
+		5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueue.swift; path = ../Sources/SwiftPriorityQueue.swift; sourceTree = "<group>"; };
 		5564AFFA1AD509E8008CF6EF /* astar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = astar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
