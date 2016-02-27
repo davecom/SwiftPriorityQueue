@@ -13,7 +13,7 @@ Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) 
 * A fun maze solving A* based example program
 
 ## Installation
-Simply copy `SwiftPriorityQueue.swift` into your project or use the CocoaPod `SwiftPriorityQueue`. Release 1.0.1 and beyond supports Swift 2. Use release 1.0 for Swift 1.2 support.
+Copy `SwiftPriorityQueue.swift` into your project or use the CocoaPod `SwiftPriorityQueue`. Release 1.0.1 and beyond supports Swift 2. Use release 1.0 for Swift 1.2 support. SwiftPriorityQueue also supports the Swift Package Manager(SPM). Simply add this repository as a dependency.
 
 ## Documentation
 There is a large amount of documentation in the source code using the standard Swift documentation technique (compatible with Jazzy).  Essentially though, SwiftPriorityQueue has the three critical methods you'd expect - push(), pop(), and peek().
