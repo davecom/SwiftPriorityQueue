@@ -1,8 +1,8 @@
 # SwiftPriorityQueue
 
-SwiftPriorityQueue is a pure Swift (no Cocoa) implementation of a generic priority queue data structure, appropriate for use on both iOS and OS X projects. It features a straightforward interface and can be used with any type that implements Comparable. It utilizes comparisons between elements rather than separate numeric priorities to determine order.
+SwiftPriorityQueue is a pure Swift (no Cocoa) implementation of a generic priority queue data structure, appropriate for use on all platforms (OS X, iOS, Linux, etc.) where Swift is supported. It features a straightforward interface and can be used with any type that implements `Comparable`. It utilizes comparisons between elements rather than separate numeric priorities to determine order.
 
-Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) pushes and pops. It includes in-source documentation, an A* based example maze solving program, and unit tests are in progress (*pull requests are welcome for unit tests especially*).
+Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) pushes and pops. It includes in-source documentation, an A* based example maze solving program (for OS X), and unit tests (*pull requests are welcome for additional unit tests in particular*).
 
 ## Features
 * Easy-to-use method interface
