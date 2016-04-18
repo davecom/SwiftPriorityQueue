@@ -24,6 +24,12 @@
 
 // This code was inspired by Section 2.4 of Algorithms by Sedgewick & Wayne, 4th Edition
 
+#if !swift(>=3.0)
+    typealias IteratorProtocol = GeneratorType
+    typealias Sequence = SequenceType
+    typealias Collection = CollectionType
+#endif
+
 /// A PriorityQueue takes objects to be pushed of any type that implements Comparable.
 /// It will pop the objects in the order that they would be sorted. A pop() or a push()
 /// can be accomplished in O(lg n) time. It can be specified whether the objects should
@@ -83,7 +89,11 @@ public struct PriorityQueue<T: Comparable> {
     
     /// Eliminate all of the elements from the Priority Queue.
     public mutating func clear() {
-        heap.removeAll(keepCapacity: false)
+        #if swift(>=3.0)
+            heap.removeAll(keepingCapacity: false)
+        #else
+            heap.removeAll(keepCapacity: false)
+        #endif
     }
     
     // Based on example from Sedgewick p 316
@@ -112,21 +122,21 @@ public struct PriorityQueue<T: Comparable> {
 }
 
 // MARK: - GeneratorType
-extension PriorityQueue: GeneratorType {
+extension PriorityQueue: IteratorProtocol {
     
     public typealias Element = T
     mutating public func next() -> Element? { return pop() }
 }
 
 // MARK: - SequenceType
-extension PriorityQueue: SequenceType {
+extension PriorityQueue: Sequence {
     
     public typealias Generator = PriorityQueue
     public func generate() -> Generator { return self }
 }
 
 // MARK: - CollectionType
-extension PriorityQueue: CollectionType {
+extension PriorityQueue: Collection {
     
     public typealias Index = Int
     
