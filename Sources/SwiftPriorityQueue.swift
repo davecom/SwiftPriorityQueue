@@ -48,7 +48,13 @@ public struct PriorityQueue<T: Comparable> {
             ordered = { $0 < $1 }
         }
         
-        for value in startingValues { push(value) }
+        // Based on "Heap construction" from Sedgewick p 323
+        heap = startingValues
+        var i = heap.count/2 - 1
+        while i >= 0 {
+            sink(i);
+            i -= 1
+        }
     }
     
     /// How many elements the Priority Queue stores
