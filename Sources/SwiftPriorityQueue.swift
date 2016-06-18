@@ -52,7 +52,7 @@ public struct PriorityQueue<T: Comparable> {
         heap = startingValues
         var i = heap.count/2 - 1
         while i >= 0 {
-            sink(i);
+            sink(i)
             i -= 1
         }
     }
