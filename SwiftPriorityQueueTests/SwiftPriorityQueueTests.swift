@@ -49,7 +49,7 @@ class SwiftPriorityQueueTests: XCTestCase {
             var s = Set((0..<(arc4random_uniform(100))).map { _ in arc4random_uniform(UInt32.max) })
             var q = PriorityQueue.init(startingValues: Array(s))
             XCTAssertEqual(s.count, q.count, "Incorrect count with elements: " + s.description)
-            while let se = s.maxElement() {
+            while let se = s.max() {
                 XCTAssertEqual(se, q.pop(), "Incorrect max item with elements: " + s.description)
                 s.remove(se)
             }

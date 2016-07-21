@@ -14,7 +14,7 @@ Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) 
 
 ## Installation
 
-Release 1.0.1 and beyond supports Swift 2. Use release 1.0 for Swift 1.2 support.
+Release 1.1.0 and beyond supports Swift 3 (and should still work with Swift 2). Releases 1.0.1 through 1.0.3 support Swift 2. Use release 1.0 for Swift 1.2 support.
 
 ### CocoaPods
 

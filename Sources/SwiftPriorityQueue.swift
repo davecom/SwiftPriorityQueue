@@ -66,7 +66,7 @@ public struct PriorityQueue<T: Comparable> {
     /// Add a new element onto the Priority Queue. O(lg n)
     ///
     /// - parameter element: The element to be inserted into the Priority Queue.
-    public mutating func push(element: T) {
+    public mutating func push(_ element: T) {
         heap.append(element)
         swim(heap.count - 1)
     }
@@ -103,7 +103,7 @@ public struct PriorityQueue<T: Comparable> {
     }
     
     // Based on example from Sedgewick p 316
-    private mutating func sink(index: Int) {
+    private mutating func sink(_ index: Int) {
         var index = index
         while 2 * index + 1 < heap.count {
             
@@ -118,7 +118,7 @@ public struct PriorityQueue<T: Comparable> {
     }
     
     // Based on example from Sedgewick p 316
-    private mutating func swim(index: Int) {
+    private mutating func swim(_ index: Int) {
         var index = index
         while index > 0 && ordered(heap[(index - 1) / 2], heap[index]) {
             swap(&heap[(index - 1) / 2], &heap[index])
@@ -137,8 +137,8 @@ extension PriorityQueue: IteratorProtocol {
 // MARK: - SequenceType
 extension PriorityQueue: Sequence {
     
-    public typealias Generator = PriorityQueue
-    public func generate() -> Generator { return self }
+    public typealias Iterator = PriorityQueue
+    public func makeIterator() -> Iterator { return self }
 }
 
 // MARK: - CollectionType
@@ -150,6 +150,12 @@ extension PriorityQueue: Collection {
     public var endIndex: Int { return heap.endIndex }
     
     public subscript(i: Int) -> T { return heap[i] }
+    
+    #if swift(>=3.0)
+        public func index(after i: PriorityQueue.Index) -> PriorityQueue.Index {
+            return heap.index(after: i)
+        }
+    #endif
 }
 
 // MARK: - CustomStringConvertible, CustomDebugStringConvertible

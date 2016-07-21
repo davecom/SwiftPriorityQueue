@@ -51,7 +51,7 @@ func == <T>(lhs: Node<T>, rhs: Node<T>) -> Bool {
 ///
 /// - parameter startNode: The goal node found from an astar search.
 /// - returns: An array containing the states to get from the start to the goal.
-func backtrack<T>(goalNode: Node<T>) -> [T] {
+func backtrack<T>(_ goalNode: Node<T>) -> [T] {
     var sol: [T] = []
     var node = goalNode
     
@@ -72,7 +72,7 @@ func backtrack<T>(goalNode: Node<T>) -> [T] {
 /// - parameter successorFn: A function that finds the next states from a state.
 /// - parameter heuristicFn: A function that makes an underestimate of distance from a state to the goal.
 /// - returns: A path from the start state to a goal state as an array.
-func astar<T: Hashable>(initialState: T, goalTestFn: (T) -> Bool, successorFn: (T) -> [T], heuristicFn: (T) -> Float) -> [T]? {
+func astar<T: Hashable>(_ initialState: T, goalTestFn: (T) -> Bool, successorFn: (T) -> [T], heuristicFn: (T) -> Float) -> [T]? {
     var frontier = PriorityQueue(ascending: true, startingValues: [Node(state: initialState, parent: nil, cost: 0, heuristic: heuristicFn(initialState))])
     var explored = Dictionary<T, Float>()
     explored[initialState] = 0
