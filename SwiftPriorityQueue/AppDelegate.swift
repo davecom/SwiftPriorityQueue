@@ -35,11 +35,11 @@ enum Cell {
     case path
     func color() -> CGColor {
         switch (self) {
-        case empty: return NSColor.white().cgColor
-        case blocked: return NSColor.black().cgColor
-        case start: return NSColor.green().cgColor
-        case goal: return NSColor.red().cgColor
-        case path: return NSColor.yellow().cgColor
+        case .empty: return NSColor.white.cgColor
+        case .blocked: return NSColor.black.cgColor
+        case .start: return NSColor.green.cgColor
+        case .goal: return NSColor.red.cgColor
+        case .path: return NSColor.yellow.cgColor
         }
     }
 }
@@ -82,7 +82,7 @@ class MazeView: NSView {
                     cell = .blocked
                 }
                 position[i].append(cell)
-                temp.borderColor = NSColor.purple().cgColor
+                temp.borderColor = NSColor.purple.cgColor
                 temp.backgroundColor = cell.color()
                 temp.frame = CGRect(x: CGFloat(CGFloat(j) * (width / CGFloat(NUM_COLS))), y: CGFloat(CGFloat(i) * (height / CGFloat(NUM_ROWS))), width: (width / CGFloat(NUM_COLS)), height: (height / CGFloat(NUM_ROWS)))
                 layer?.addSublayer(temp)
@@ -92,7 +92,7 @@ class MazeView: NSView {
     }
     
     // when a click occurs, place a start and a goal cell, then ultimately do an astar search
-    override func mouseDown(_ theEvent: NSEvent) {
+    override func mouseDown(with theEvent: NSEvent) {
         let width: CGFloat = self.bounds.size.width
         let height: CGFloat = self.bounds.size.height
         let mousePlace:NSPoint = self.convert(theEvent.locationInWindow, from: nil)

@@ -90,7 +90,7 @@ func astar<T: Hashable>(_ initialState: T, goalTestFn: (T) -> Bool, successorFn:
         
         for child in successorFn(currentState) {
             let newcost = currentNode.cost + 1  //1 assumes a grid, there should be a cost function
-            if (explored[child] == nil) || (explored[child] > newcost) {
+            if (explored[child] == nil) || (explored[child]! > newcost) {
                 explored[child] = newcost
                 frontier.push(Node(state: child, parent: currentNode, cost: newcost, heuristic: heuristicFn(child)))
             }
