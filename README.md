@@ -8,7 +8,7 @@ Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) 
 * Easy-to-use method interface
 * Small, self contained, pure Swift code base
 * Classic binary heap implementation with O(lg n) pushes and pops
-* Iterable through standard Swift for...in loops (implements SequenceType and GeneratorType)
+* Iterable through standard Swift for...in loops (implements `Sequence` and `IteratorProtocol`)
 * In-source documentation
 * A fun maze solving A* based example program
 
@@ -52,13 +52,15 @@ Or you can specify neither. By default a `PriorityQueue` is decsending and empty
 * `pop() -> T?` - Returns and removes the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(lg n)
 * `peek() -> T?` - Returns the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(1)
 * `clear()` - Removes all elements from the priority queue.
+* `remove(item: T)` - Removes the first found instance of *item* in the priority queue. Silently returns if not found. O(n)
+* `removeAll(item: T)` - Removes all instances of *item* in the priority queue through repeated calls to `remove()`. Silently returns if not found.
 
 ### Properties
 * `count: Int` - The number of elements in the priority queue.
 * `isEmpty: Bool` - `true` if the priority queue has zero elements, and `false` otherwise.
 
 ### Standard Swift Protocols
-`PriorityQueue` implements `SequenceType`, `CollectionType` and `GeneratorType` so you can treat `PriorityQueue` like any other Swift sequence/collection. This means you can use Swift standard library fucntions on a `PriorityQueue` and iterate through a `PriorityQueue` like this:
+`PriorityQueue` implements `ItereatorProtocol`, `Sequence` and `Collection` so you can treat `PriorityQueue` like any other Swift sequence/collection. This means you can use Swift standard library fucntions on a `PriorityQueue` and iterate through a `PriorityQueue` like this:
 ```
 for item in pq {  // pq is a PriorityQueue<String>
     print(item)
