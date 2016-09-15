@@ -74,4 +74,44 @@ class SwiftPriorityQueueTests: XCTestCase {
         XCTAssertEqual(pq.peek(), 5, "Peek didn't return top element: " + pq.description)
     }
     
+    func testRemove() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
+        for i in 0..<10 {
+            pq.push(i);
+        }
+        
+        pq.remove(4)
+        pq.remove(7)
+        
+        let expected: [Int] = [9, 8, 6, 5, 3, 2, 1, 0]
+        var actual: [Int] = []
+        for j in pq {
+            actual.append(j)
+        }
+        
+        XCTAssertEqual(expected, actual, "Trouble Removing 4 or 7")
+    }
+    
+    func testRemoveAll() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
+        for i in 0..<10 {
+            pq.push(i);
+        }
+        
+        pq.push(4)
+        pq.push(7)
+        pq.push(7)
+        
+        pq.remove(4)
+        pq.removeAll(7)
+        
+        let expected: [Int] = [9, 8, 6, 5, 4, 3, 2, 1, 0]
+        var actual: [Int] = []
+        for j in pq {
+            actual.append(j)
+        }
+        
+        XCTAssertEqual(expected, actual, "Trouble Removing 4 or all 7s")
+    }
+    
 }
