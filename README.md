@@ -44,7 +44,7 @@ Or you can specify both.
 ```
 var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: false, startingValues: [6, 2, 3, 235, 4, 500])
 ```
-Or you can specify neither. By default a `PriorityQueue` is decsending and empty. As you've probably noticed, a PriorityQueue takes a generic type. This type must be `Comparable`, as its comparison will be used for determining priority.  This means that your custom types must implement `Comparable` and utilize the overridden `<` to determine priority.
+Or you can specify neither. By default a `PriorityQueue` is descending and empty. As you've probably noticed, a PriorityQueue takes a generic type. This type must be `Comparable`, as its comparison will be used for determining priority.  This means that your custom types must implement `Comparable` and utilize the overridden `<` to determine priority.
 
 ### Methods
 `PriorityQueue` has all of the standard methods you'd expect a priority queue data structure to have.
