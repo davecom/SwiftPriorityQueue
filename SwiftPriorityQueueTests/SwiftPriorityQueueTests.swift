@@ -12,6 +12,22 @@ import Foundation
 
 class SwiftPriorityQueueTests: XCTestCase {
     
+    func testCustomOrder() {
+        let priorities = [0: 5000, 1: 4000, 2: 3000, 3: 2000, 4: 1000, 5: 0]
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>(order: { priorities[$0]! > priorities[$1]! })
+        for i in 0...5 {
+            pq.push(i);
+        }
+        
+        let expected: [Int] = [5, 4, 3, 2, 1, 0]
+        var actual: [Int] = []
+        for j in pq {
+            actual.append(j)
+        }
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
     func testBasic() {
         var pq: PriorityQueue<Int> = PriorityQueue<Int>()
         for i in 0..<10 {

@@ -41,12 +41,16 @@ public struct PriorityQueue<T: Comparable> {
     private let ordered: (T, T) -> Bool
     
     public init(ascending: Bool = false, startingValues: [T] = []) {
-        
-        if ascending {
-            ordered = { $0 > $1 }
-        } else {
-            ordered = { $0 < $1 }
-        }
+        self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
+    }
+    
+    /// Creates a new PriorityQueue with the given ordering.
+    ///
+    /// - parameter order: A function that specifies whether its first argument should
+    ///                    come after the second argument in the PriorityQueue.
+    /// - parameter startingValues: An array of elements to initialize the PriorityQueue with.
+    public init(order: @escaping (T, T) -> Bool, startingValues: [T] = []) {
+        ordered = order
         
         // Based on "Heap construction" from Sedgewick p 323
         heap = startingValues
