@@ -1,3 +1,7 @@
+###1.1.2
+- Initializer that takes custom order function added
+- watchOS added to podspec
+
 ###1.1.1
 - Added remove(item: T) method to remove an item at an arbitrary location
 - Added removeAll(item: T) method to remove multiple of the same item
