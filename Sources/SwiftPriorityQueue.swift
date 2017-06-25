@@ -35,14 +35,10 @@
 /// can be accomplished in O(lg n) time. It can be specified whether the objects should
 /// be popped in ascending or descending order (Max Priority Queue or Min Priority Queue)
 /// at the time of initialization.
-public struct PriorityQueue<T: Comparable> {
+public struct PriorityQueue<T: Equatable> {
     
     fileprivate var heap = [T]()
     private let ordered: (T, T) -> Bool
-    
-    public init(ascending: Bool = false, startingValues: [T] = []) {
-        self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
-    }
     
     /// Creates a new PriorityQueue with the given ordering.
     ///
@@ -155,6 +151,13 @@ public struct PriorityQueue<T: Comparable> {
             swap(&heap[(index - 1) / 2], &heap[index])
             index = (index - 1) / 2
         }
+    }
+}
+
+extension PriorityQueue where T : Comparable {
+
+    public init(ascending: Bool = false, startingValues: [T] = []) {
+        self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
     }
 }
 
