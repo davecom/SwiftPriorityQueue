@@ -1,3 +1,9 @@
+### 1.2.0
+> Note: 1.2.0 is the first version of SwiftPriorityQueue to break compatibility with previous versions of Swift since release 1.0.1. From this point forward users of Swift 2 and Swift 3 should use release 1.1.2 of SwiftPriorityQueue.
+
+- Swift 4 support
+- Removed preprocessor macros and code to support Swift 2
+
 ### 1.1.2
 - Initializer that takes custom order function added
 - watchOS added to podspec
@@ -10,8 +16,7 @@
 - Swift 3 support
 
 ### 1.0.3
-- Beginning of work to support Swift 3
-- Last release to support Swift 2
+- Last Swift 2 only release
 - Improved unit tests
 
 ### 1.0.2

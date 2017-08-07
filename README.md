@@ -1,8 +1,8 @@
 # SwiftPriorityQueue
 
-SwiftPriorityQueue is a pure Swift (no Cocoa) implementation of a generic priority queue data structure, appropriate for use on all platforms (OS X, iOS, Linux, etc.) where Swift is supported. It features a straightforward interface and can be used with any type that implements `Comparable`. It utilizes comparisons between elements rather than separate numeric priorities to determine order.
+SwiftPriorityQueue is a pure Swift (no Cocoa) implementation of a generic priority queue data structure, appropriate for use on all platforms (macOS, iOS, Linux, etc.) where Swift is supported. It features a straightforward interface and can be used with any type that implements `Comparable`. It utilizes comparisons between elements rather than separate numeric priorities to determine order.
 
-Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) pushes and pops. It includes in-source documentation, an A* based example maze solving program (for OS X), and unit tests (*pull requests are welcome for additional unit tests in particular*).
+Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) pushes and pops. It includes in-source documentation, an A* based example maze solving program (for macOS), and unit tests (*pull requests are welcome for additional unit tests in particular*).
 
 ## Features
 * Easy-to-use method interface
@@ -14,7 +14,7 @@ Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) 
 
 ## Installation
 
-Release 1.1.0 and beyond supports Swift 3 (and should still work with Swift 2). Releases 1.0.1 through 1.0.3 support Swift 2. Use release 1.0 for Swift 1.2 support.
+Release 1.2.0 and above supports Swift 4. Use release 1.1.2 for Swift 3 and Swift 2 support. Use release 1.0 for Swift 1.2 support.
 
 ### CocoaPods
 
@@ -29,7 +29,7 @@ Add this repository as a dependency.
 Copy `SwiftPriorityQueue.swift` into your project.
 
 ## Documentation
-There is a large amount of documentation in the source code using the standard Swift documentation technique (compatible with Jazzy).  Essentially though, SwiftPriorityQueue has the three critical methods you'd expect - push(), pop(), and peek().
+There is a large amount of documentation in the source code using the standard Swift documentation technique (compatible with Jazzy).  Essentially though, SwiftPriorityQueue has the three critical methods you'd expect - `push()`, `pop()`, and `peek()`.
 
 ### Initialization
 When you create a new `PriorityQueue` you can optionally specify whether the priority queue is ascending or descending. What does this mean? If the priority queue is ascending, its smallest values (as determined by their implementation of `Comparable` aka `<`) will be popped first, and if it's descending, its largest values will be popped first.
