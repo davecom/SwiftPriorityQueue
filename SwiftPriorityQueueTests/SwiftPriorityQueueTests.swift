@@ -130,4 +130,20 @@ class SwiftPriorityQueueTests: XCTestCase {
         XCTAssertEqual(expected, actual, "Trouble Removing 4 or all 7s")
     }
     
+    func testRemoveLastInHeap() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
+        pq.push(1)
+        pq.push(2)
+        
+        pq.remove(1)
+        
+        let expected: [Int] = [2]
+        var actual: [Int] = []
+        for j in pq {
+            actual.append(j)
+        }
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
 }

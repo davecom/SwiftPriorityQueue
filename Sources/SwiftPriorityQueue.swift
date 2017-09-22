@@ -93,8 +93,10 @@ public struct PriorityQueue<T: Comparable> {
         if let index = heap.index(of: item) {
             heap.swapAt(index, heap.count - 1)
             heap.removeLast()
-            swim(index)
-            sink(index)
+            if index < heap.count { // if we removed the last item, nothing to swim
+                swim(index)
+                sink(index)
+            }
         }
     }
     
