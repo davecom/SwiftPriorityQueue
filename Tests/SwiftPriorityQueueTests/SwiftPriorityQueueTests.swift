@@ -145,4 +145,15 @@ class SwiftPriorityQueueTests: XCTestCase {
         XCTAssertEqual(expected, actual)
     }
     
+    static var allTests = [
+        ("testCustomOrder", testCustomOrder),
+        ("testBasic", testBasic),
+        ("testString", testString),
+        ("testSetEquiv", testSetEquiv),
+        ("testClear", testClear),
+        ("testPeek", testPeek),
+        ("testRemove", testRemove),
+        ("testRemoveAll", testRemoveAll),
+        ("testRemoveLastInHeap", testRemoveLastInHeap)
+        ]
 }

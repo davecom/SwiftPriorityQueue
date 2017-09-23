@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		551E58BB1F770580007073B0 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */; };
+		551E58BC1F770583007073B0 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */; };
 		553948251AC6495600666559 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553948241AC6495600666559 /* AppDelegate.swift */; };
 		553948271AC6495600666559 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553948261AC6495600666559 /* Images.xcassets */; };
 		5539482A1AC6495600666559 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 553948281AC6495600666559 /* MainMenu.xib */; };
 		553948361AC6495600666559 /* SwiftPriorityQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */; };
-		553948401AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */; };
-		553948411AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */; };
 		5564AFFB1AD509E8008CF6EF /* astar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5564AFFA1AD509E8008CF6EF /* astar.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,15 +27,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueue.swift; path = Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift; sourceTree = SOURCE_ROOT; };
 		5539481F1AC6495600666559 /* SwiftPriorityQueue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftPriorityQueue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		553948231AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553948241AC6495600666559 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		553948261AC6495600666559 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		553948291AC6495600666559 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		5539482F1AC6495600666559 /* SwiftPriorityQueueTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftPriorityQueueTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		553948341AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftPriorityQueueTests.swift; sourceTree = "<group>"; };
-		5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueue.swift; path = ../Sources/SwiftPriorityQueue.swift; sourceTree = "<group>"; };
+		553948341AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
+		553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueueTests.swift; path = ../Tests/SwiftPriorityQueueTests/SwiftPriorityQueueTests.swift; sourceTree = "<group>"; };
 		5564AFFA1AD509E8008CF6EF /* astar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = astar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,8 +78,8 @@
 		553948211AC6495600666559 /* SwiftPriorityQueue */ = {
 			isa = PBXGroup;
 			children = (
+				551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */,
 				553948241AC6495600666559 /* AppDelegate.swift */,
-				5539483F1AC64A1900666559 /* SwiftPriorityQueue.swift */,
 				5564AFFA1AD509E8008CF6EF /* astar.swift */,
 				553948261AC6495600666559 /* Images.xcassets */,
 				553948281AC6495600666559 /* MainMenu.xib */,
@@ -215,9 +215,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				551E58BB1F770580007073B0 /* SwiftPriorityQueue.swift in Sources */,
 				553948251AC6495600666559 /* AppDelegate.swift in Sources */,
 				5564AFFB1AD509E8008CF6EF /* astar.swift in Sources */,
-				553948401AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				553948361AC6495600666559 /* SwiftPriorityQueueTests.swift in Sources */,
-				553948411AC64A1900666559 /* SwiftPriorityQueue.swift in Sources */,
+				551E58BC1F770583007073B0 /* SwiftPriorityQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,7 +389,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftPriorityQueueTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.oaksnow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -406,7 +406,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftPriorityQueueTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.oaksnow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
