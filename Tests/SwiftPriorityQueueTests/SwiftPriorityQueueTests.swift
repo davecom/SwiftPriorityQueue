@@ -8,6 +8,7 @@
 
 import XCTest
 import Foundation
+@testable import SwiftPriorityQueue
 
 class SwiftPriorityQueueTests: XCTestCase {
     
