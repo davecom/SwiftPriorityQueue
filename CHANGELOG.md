@@ -1,3 +1,8 @@
+### 1.2.1
+- Fixed a critical bug in remove() and added a test for it
+- Rearranged the project to be testable on Linux
+- Updated the format of Package.swift to be in-line with Swift 4
+
 ### 1.2.0
 > Note: 1.2.0 is the first version of SwiftPriorityQueue to break compatibility with previous versions of Swift since release 1.0.1. From this point forward users of Swift 2 and Swift 3 should use release 1.1.2 of SwiftPriorityQueue.
 

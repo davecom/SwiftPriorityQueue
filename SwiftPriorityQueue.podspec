@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SwiftPriorityQueue'
-  s.version          = '1.2.0'
+  s.version          = '1.2.1'
   s.license          = 'MIT'
   s.summary          = 'A Generic Priority Queue in Pure Swift'
   s.homepage         = 'https://github.com/davecom/SwiftPriorityQueue'
@@ -11,6 +11,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.9'
   s.tvos.deployment_target = '9.0'
   s.watchos.deployment_target = '2.0'
-  s.source_files = 'Sources/SwiftPriorityQueue.swift'
+  s.source_files = 'Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift'
   s.requires_arc = true
 end
