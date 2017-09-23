@@ -72,7 +72,7 @@ class SwiftPriorityQueueTests: XCTestCase {
     
     func testSetEquiv() {
         for _ in 0..<100 {
-            var s = Set((0..<(arc4random_uniform(100))).map { _ in arc4random_uniform(UInt32.max) })
+            var s = Set((0..<(arc4random_uniform(100))).map { _ in arc4random_uniform(1000000) })
             var q = PriorityQueue.init(startingValues: Array(s))
             XCTAssertEqual(s.count, q.count, "Incorrect count with elements: " + s.description)
             while let se = s.max() {
