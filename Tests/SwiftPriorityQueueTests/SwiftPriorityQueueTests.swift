@@ -10,6 +10,16 @@ import XCTest
 import Foundation
 @testable import SwiftPriorityQueue
 
+// based on gist https://gist.github.com/rymcol/48a505c2a1c874daea52a296a2687f5f
+// so we have something that sorta kinda looks like arc4random_uniform() on Linux
+#if os(Linux)
+    import SwiftGlibc
+    
+    public func arc4random_uniform(_ max: UInt32) -> Int32 {
+        return (SwiftGlibc.rand() % Int32(max-1))
+    }
+#endif
+
 class SwiftPriorityQueueTests: XCTestCase {
     
     func testCustomOrder() {
