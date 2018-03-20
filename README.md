@@ -1,5 +1,12 @@
 # SwiftPriorityQueue
 
+[![Swift Versions](https://img.shields.io/badge/Swift-1%2C2%2C3%2C4-green.svg)](https://swift.org)
+[![CocoaPods Version](https://img.shields.io/cocoapods/v/SwiftPriorityQueue.svg)](https://cocoapods.org/pods/SwiftPriorityQueue)
+[![SPM Compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/)
+[![CocoaPods Platforms](https://img.shields.io/cocoapods/p/SwiftPriorityQueue.svg)](https://cocoapods.org/pods/SwiftPriorityQueue)
+[![Linux Compatible](https://img.shields.io/badge/Linux-compatible-4BC51D.svg?style=flat)](https://swift.org)
+[![Twitter Contact](https://img.shields.io/badge/contact-@davekopec-blue.svg?style=flat)](https://twitter.com/davekopec)
+
 SwiftPriorityQueue is a pure Swift (no Cocoa) implementation of a generic priority queue data structure, appropriate for use on all platforms (macOS, iOS, Linux, etc.) where Swift is supported. It features a straightforward interface and can be used with any type that implements `Comparable`. It utilizes comparisons between elements rather than separate numeric priorities to determine order.
 
 Internally, SwiftPriorityQueue uses a classic binary heap, resulting in O(lg n) pushes and pops. It includes in-source documentation, an A* based example maze solving program (for macOS), and unit tests (*pull requests are welcome for additional unit tests in particular*).
