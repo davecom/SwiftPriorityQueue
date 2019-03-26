@@ -2,7 +2,7 @@
 //  astar.swift
 //  SwiftPriorityQueue
 //
-//  Copyright (c) 2015-2017 David Kopec
+//  Copyright (c) 2015-2019 David Kopec
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 // This is an example of astar that uses SwiftPriorityQueue
 
-class Node<T>: Comparable, Hashable {
+class Node<T: Hashable>: Comparable, Hashable {
     let state: T
     let parent: Node?
     let cost: Float
@@ -36,7 +36,12 @@ class Node<T>: Comparable, Hashable {
         self.heuristic = heuristic
     }
     
-    var hashValue: Int { return (Int) (cost + heuristic) }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(state)
+        hasher.combine(parent)
+        hasher.combine(cost)
+        hasher.combine(heuristic)
+    }
 }
 
 func < <T>(lhs: Node<T>, rhs: Node<T>) -> Bool {

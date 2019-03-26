@@ -12,8 +12,8 @@
 		553948251AC6495600666559 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553948241AC6495600666559 /* AppDelegate.swift */; };
 		553948271AC6495600666559 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553948261AC6495600666559 /* Images.xcassets */; };
 		5539482A1AC6495600666559 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 553948281AC6495600666559 /* MainMenu.xib */; };
-		553948361AC6495600666559 /* SwiftPriorityQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */; };
 		5564AFFB1AD509E8008CF6EF /* astar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5564AFFA1AD509E8008CF6EF /* astar.swift */; };
+		5565CDFB2249BE24002664E3 /* SwiftPriorityQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5565CDFA2249BE24002664E3 /* SwiftPriorityQueueTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +34,9 @@
 		553948261AC6495600666559 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		553948291AC6495600666559 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		5539482F1AC6495600666559 /* SwiftPriorityQueueTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftPriorityQueueTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		553948341AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
-		553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueueTests.swift; path = ../Tests/SwiftPriorityQueueTests/SwiftPriorityQueueTests.swift; sourceTree = "<group>"; };
+		553948341AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/Info.plist; sourceTree = "<group>"; };
 		5564AFFA1AD509E8008CF6EF /* astar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = astar.swift; sourceTree = "<group>"; };
+		5565CDFA2249BE24002664E3 /* SwiftPriorityQueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueueTests.swift; path = Tests/SwiftPriorityQueueTests/SwiftPriorityQueueTests.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 		553948321AC6495600666559 /* SwiftPriorityQueueTests */ = {
 			isa = PBXGroup;
 			children = (
-				553948351AC6495600666559 /* SwiftPriorityQueueTests.swift */,
+				5565CDFA2249BE24002664E3 /* SwiftPriorityQueueTests.swift */,
 				553948331AC6495600666559 /* Supporting Files */,
 			);
 			path = SwiftPriorityQueueTests;
@@ -159,22 +159,22 @@
 			attributes = {
 				LastSwiftMigration = 0710;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Oak Snow Consulting";
 				TargetAttributes = {
 					5539481E1AC6495600666559 = {
 						CreatedOnToolsVersion = 6.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					5539482E1AC6495600666559 = {
 						CreatedOnToolsVersion = 6.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
 			buildConfigurationList = 5539481A1AC6495600666559 /* Build configuration list for PBXProject "SwiftPriorityQueue" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -225,8 +225,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				553948361AC6495600666559 /* SwiftPriorityQueueTests.swift in Sources */,
 				551E58BC1F770583007073B0 /* SwiftPriorityQueue.swift in Sources */,
+				5565CDFB2249BE24002664E3 /* SwiftPriorityQueueTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,8 +361,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.oaksnow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -376,8 +375,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.oaksnow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -397,8 +395,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.oaksnow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -415,8 +412,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.oaksnow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

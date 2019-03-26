@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  SwiftPriorityQueue
 //
-//  Copyright (c) 2015-2017 David Kopec
+//  Copyright (c) 2015-2019 David Kopec
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,6 @@ enum Cell {
 struct Point: Hashable {
     let x: Int
     let y: Int
-    var hashValue: Int { return (Int) (x.hashValue * 31 + y.hashValue) }
 }
 
 func == (lhs: Point, rhs: Point) -> Bool {
