@@ -1,3 +1,6 @@
+### 1.3.0
+- Swift 5 support
+
 ### 1.2.1
 - Fixed a critical bug in remove() and added a test for it
 - Rearranged the project to be testable on Linux
