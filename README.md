@@ -1,6 +1,6 @@
 # SwiftPriorityQueue
 
-[![Swift Versions](https://img.shields.io/badge/Swift-1%2C2%2C3%2C4-green.svg)](https://swift.org)
+[![Swift Versions](https://img.shields.io/badge/Swift-1%2C2%2C3%2C4%2C5-green.svg)](https://swift.org)
 [![CocoaPods Version](https://img.shields.io/cocoapods/v/SwiftPriorityQueue.svg)](https://cocoapods.org/pods/SwiftPriorityQueue)
 [![SPM Compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/)
 [![CocoaPods Platforms](https://img.shields.io/cocoapods/p/SwiftPriorityQueue.svg)](https://cocoapods.org/pods/SwiftPriorityQueue)
