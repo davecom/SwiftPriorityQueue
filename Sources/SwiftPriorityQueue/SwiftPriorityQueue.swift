@@ -24,6 +24,175 @@
 
 // This code was inspired by Section 2.4 of Algorithms by Sedgewick & Wayne, 4th Edition
 
+prefix operator --
+prefix operator ++
+
+extension UnsafeMutablePointer {
+    @usableFromInline
+    static prefix func --(lhs: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
+        lhs -= 1
+        return lhs
+    }
+    
+    @usableFromInline
+    static prefix func ++(lhs: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
+        lhs += 1
+        return lhs
+    }
+}
+
+
+extension Int {
+    @usableFromInline
+    static prefix func --(lhs: inout Int) -> Int {
+        lhs -= 1
+        return lhs
+    }
+    
+    @usableFromInline
+    static prefix func ++(lhs: inout Int) -> Int {
+        lhs += 1
+        return lhs
+    }
+}
+
+@usableFromInline
+internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>) {
+    let t = a.move()
+    a.moveInitialize(from: b, count: 1)
+    b.initialize(to: t)
+}
+
+
+@inlinable
+internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ : UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool,
+                                   length: Int)
+{
+    typealias difference_type = Int
+    if (length > 1)
+    {
+        var pIndex: Int = 0
+        var pPointer = first
+        var cIndex: Int = 2
+        var cPointer = first + cIndex
+        if (cIndex == length || isOrderedBefore(cPointer, (cPointer - 1)))
+        {
+            cIndex -= 1
+            cPointer -= 1
+        }
+        if (isOrderedBefore(pPointer, cPointer))
+        {
+            var temp = pPointer.move()
+            repeat {
+                pPointer.moveInitialize(from: cPointer, count: 1)
+                pPointer = cPointer;
+                pIndex = cIndex;
+                cIndex = (pIndex + 1) * 2;
+                if (cIndex > length) {
+                    break;
+                }
+                cPointer = first + cIndex;
+                if (cIndex == length || isOrderedBefore(cPointer, (cPointer - 1)))
+                {
+                    cIndex -= 1
+                    cPointer -= 1
+                }
+            } while (isOrderedBefore(&temp, cPointer));
+            pPointer.initialize(to: temp)
+        }
+    }
+}
+
+@inlinable
+internal func __push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int)
+{
+    
+    var len = length
+    var localLast = last
+    
+    if (len > 1)
+    {
+        len = (len - 2) / 2;
+        var ptr = first + len;
+        if (isOrderedBefore(ptr, --localLast))
+        {
+            var t = localLast.move()
+            repeat {
+                localLast.moveInitialize(from: ptr, count: 1)
+                localLast = ptr;
+                if (len == 0) {
+                    break;
+                }
+                len = (len - 1) / 2;
+                ptr = first + len;
+            } while (isOrderedBefore(ptr, &t));
+            localLast.initialize(to: t)
+        }
+    }
+}
+
+@inlinable
+internal func __pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
+    let newLast = last - 1
+    if length > 1 {
+        swap(first, newLast)
+        __push_heap_front(first, newLast, isOrderedBefore, length: length - 1)
+    }
+}
+
+@inlinable
+internal func push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last:UnsafeMutablePointer<T>, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
+    __push_heap_back(first, last, {ordered($0.pointee, $1.pointee)}, last - first)
+}
+
+@inlinable
+internal func pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
+    __pop_heap(first, last, {ordered($0.pointee, $1.pointee)}, last - first)
+}
+
+@inlinable
+internal func __make_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool) {
+    let n = last - first
+    if n > 1 {
+        var current = first + 1
+        var i = 1
+        while i < n {
+            __push_heap_back(first, ++current, isOrderedBefore, ++i)
+        }
+    }
+}
+
+@inlinable
+internal func make_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ ordered: (T, T) -> Bool = { $0 < $1 }) {
+    __make_heap(first, last, {ordered($0.pointee, $1.pointee)})
+}
+
+@inlinable
+internal func __heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
+    var n = (length - 2) / 2
+    while n >= 0 {
+        var i = n
+        while 2 * i + 1 < length {
+            
+            var j = 2 * i + 1
+            
+            if j < (length - 1) && isOrderedBefore(first + j, first + j + 1) { j += 1 }
+            if !isOrderedBefore(first + i, first + j) { break }
+            
+            swap(first + i, first + j)
+            
+            i = j
+        }
+        n -= 1
+    }
+}
+
+@inlinable
+internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, ordered: (T, T) -> Bool) {
+    __heapify(first, last, {ordered($0.pointee, $1.pointee)}, last - first)
+}
+
+
 /// A PriorityQueue takes objects to be pushed of any type that implements Comparable.
 /// It will pop the objects in the order that they would be sorted. A pop() or a push()
 /// can be accomplished in O(lg n) time. It can be specified whether the objects should
@@ -48,10 +217,11 @@ public struct PriorityQueue<T: Comparable> {
         
         // Based on "Heap construction" from Sedgewick p 323
         heap = startingValues
-        var i = heap.count/2 - 1
-        while i >= 0 {
-            sink(i)
-            i -= 1
+        heap.withUnsafeMutableBufferPointer { bufferPointer in
+            guard let first = bufferPointer.baseAddress else {
+                return
+            }
+            heapify(first, first + bufferPointer.count, ordered: order)
         }
     }
     
@@ -66,7 +236,12 @@ public struct PriorityQueue<T: Comparable> {
     /// - parameter element: The element to be inserted into the Priority Queue.
     public mutating func push(_ element: T) {
         heap.append(element)
-        swim(heap.count - 1)
+        heap.withUnsafeMutableBufferPointer { bufferPointer in
+            guard let first = bufferPointer.baseAddress else {
+                return
+            }
+            push_heap_back(first, first + bufferPointer.count, ordered)
+        }
     }
     
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
@@ -75,13 +250,13 @@ public struct PriorityQueue<T: Comparable> {
     public mutating func pop() -> T? {
         
         if heap.isEmpty { return nil }
-        if heap.count == 1 { return heap.removeFirst() }  // added for Swift 2 compatibility
-        // so as not to call swap() with two instances of the same location
-        heap.swapAt(0, heap.count - 1)
-        let temp = heap.removeLast()
-        sink(0)
-        
-        return temp
+        heap.withUnsafeMutableBufferPointer { bufferPointer in
+            guard let first = bufferPointer.baseAddress else {
+                return
+            }
+            pop_heap(first, first + bufferPointer.count, ordered)
+        }
+        return heap.removeLast()
     }
     
     
