@@ -176,6 +176,24 @@ class SwiftPriorityQueueTests: XCTestCase {
         }
     }
     
+    func testPushPerformance() {
+        measure {
+            var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
+            for i in 0 ..< 100000 {
+                pq.push(i)
+            }
+        }
+    }
+    
+    func testRemovePerformance() {
+        var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
+        measure {
+            for _ in 0 ..< 100 {
+                pq.remove(pq.randomElement()!)
+            }
+        }
+    }
+    
     static var allTests = [
         ("testCustomOrder", testCustomOrder),
         ("testBasic", testBasic),
@@ -187,6 +205,8 @@ class SwiftPriorityQueueTests: XCTestCase {
         ("testRemoveAll", testRemoveAll),
         ("testRemoveLastInHeap", testRemoveLastInHeap),
         ("testBuildPerformance", testBuildPerformance),
-        ("testPopPerformance", testPopPerformance)
+        ("testPopPerformance", testPopPerformance),
+        ("testPushPerformance", testPushPerformance),
+        ("testRemovePerformance", testRemovePerformance)
         ]
 }

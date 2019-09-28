@@ -65,7 +65,7 @@ internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>
 
 
 @inlinable
-internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ : UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool,
+internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool,
                                    length: Int)
 {
     if (length > 1)
@@ -103,71 +103,69 @@ internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ : UnsafeM
 }
 
 @inlinable
-internal func __push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int)
+internal func __push_heap_back<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int)
 {
     
     var len = length
-    var localLast = last
+    var last = first + length
     
     if (len > 1)
     {
         len = (len - 2) / 2;
         var ptr = first + len;
-        if (isOrderedBefore(ptr, --localLast))
+        if (isOrderedBefore(ptr, --last))
         {
-            var t = localLast.move()
+            var t = last.move()
             repeat {
-                localLast.moveInitialize(from: ptr, count: 1)
-                localLast = ptr;
+                last.moveInitialize(from: ptr, count: 1)
+                last = ptr;
                 if (len == 0) {
                     break;
                 }
                 len = (len - 1) / 2;
                 ptr = first + len;
             } while (isOrderedBefore(ptr, &t));
-            localLast.initialize(to: t)
+            last.initialize(to: t)
         }
     }
 }
 
 @inlinable
-internal func __pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
-    let newLast = last - 1
+internal func __pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
+    let newLength = length - 1
+    let newLast = first + newLength
     if length > 1 {
         swap(first, newLast)
-        __push_heap_front(first, newLast, isOrderedBefore, length: length - 1)
+        __push_heap_front(first, isOrderedBefore, length: newLength)
     }
 }
 
 @inlinable
-internal func push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last:UnsafeMutablePointer<T>, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
-    __push_heap_back(first, last, {ordered($0.pointee, $1.pointee)}, last - first)
+internal func push_heap_back<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool) {
+    __push_heap_back(first, {ordered($0.pointee, $1.pointee)}, length)
 }
 
 @inlinable
-internal func pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
-    __pop_heap(first, last, {ordered($0.pointee, $1.pointee)}, last - first)
+internal func push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
+    __push_heap_back(first, {ordered($0.pointee, $1.pointee)}, length)
 }
 
 @inlinable
-internal func __make_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool) {
-    let n = last - first
-    if n > 1 {
-        var current = first + 1
-        var i = 1
-        while i < n {
-            __push_heap_back(first, ++current, isOrderedBefore, ++i)
-        }
-    }
+internal func pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool) {
+    __pop_heap(first, {ordered($0.pointee, $1.pointee)}, length)
+}
+@inlinable
+internal func pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
+    __pop_heap(first, {ordered($0.pointee, $1.pointee)}, length)
 }
 
 @inlinable
-internal func make_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ ordered: (T, T) -> Bool = { $0 < $1 }) {
-    __make_heap(first, last, {ordered($0.pointee, $1.pointee)})
+internal func __remove_heap<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool) {
+    
 }
 
 @inlinable
-internal func __heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
+internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
     var n = (length - 2) / 2
     var i: Int
     var j: Int
@@ -199,8 +197,12 @@ internal func __heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last:
 }
 
 @inlinable
-internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, ordered: (T, T) -> Bool) {
-    __heapify(first, last, {ordered($0.pointee, $1.pointee)}, last - first)
+internal func heapify<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, ordered: (T, T) -> Bool) {
+    __heapify(first, {ordered($0.pointee, $1.pointee)}, length)
+}
+@inlinable
+internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, ordered: (T, T) -> Bool  = { $0 < $1 } ) {
+    __heapify(first, {ordered($0.pointee, $1.pointee)}, length)
 }
 
 
@@ -211,8 +213,8 @@ internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: U
 /// at the time of initialization.
 public struct PriorityQueue<T: Comparable> {
     
-    fileprivate var heap = [T]()
-    private let ordered: (T, T) -> Bool
+    internal var heap = [T]()
+    internal let ordered: (T, T) -> Bool
     
     public init(ascending: Bool = false, startingValues: [T] = []) {
         self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
@@ -232,7 +234,7 @@ public struct PriorityQueue<T: Comparable> {
             guard let first = bufferPointer.baseAddress else {
                 return
             }
-            heapify(first, first + bufferPointer.count, ordered: order)
+            heapify(first, bufferPointer.count, ordered: order)
         }
     }
     
@@ -251,7 +253,7 @@ public struct PriorityQueue<T: Comparable> {
             guard let first = bufferPointer.baseAddress else {
                 return
             }
-            push_heap_back(first, first + bufferPointer.count, ordered)
+            push_heap_back(first, bufferPointer.count, ordered)
         }
     }
     
@@ -265,7 +267,7 @@ public struct PriorityQueue<T: Comparable> {
             guard let first = bufferPointer.baseAddress else {
                 return
             }
-            pop_heap(first, first + bufferPointer.count, ordered)
+            pop_heap(first, bufferPointer.count, ordered)
         }
         return heap.removeLast()
     }
@@ -276,14 +278,69 @@ public struct PriorityQueue<T: Comparable> {
     ///
     /// - parameter item: The item to remove the first occurrence of.
     public mutating func remove(_ item: T) {
-        if let index = heap.firstIndex(of: item) {
-            heap.swapAt(index, heap.count - 1)
-            heap.removeLast()
-            if index < heap.count { // if we removed the last item, nothing to swim
-                swim(index)
-                sink(index)
+        
+        let removed = heap.withUnsafeMutableBufferPointer { bufferPointer -> Bool in
+            guard let first = bufferPointer.baseAddress else { return false }
+            let last = first + bufferPointer.count
+            var index = first
+            var found = true
+            while index.pointee != item {
+                index += 1
+                if index == last {
+                    found = false
+                    break
+                }
             }
+            guard found else { return false }
+            
+            swap(index, last - 1)
+            // now ignore last heap element and act as if it is one element shorter
+            let length = bufferPointer.count - 1
+            if index < last - 1 {
+                // swim
+                var i = index - first
+                var j = (i - 1) / 2
+                while i > 0 && ordered((first + j).pointee, (first + i).pointee) {
+                    swap(first + j, first + i)
+                    i = j
+                    j = (i - 1) / 2
+                }
+                // sink
+                i = index - first
+                j = 2 * i + 1
+                var iPointer = first + i
+                var jPointer = first + j
+                
+                while j < length {
+                    
+                    if j < (length - 1) && ordered(jPointer.pointee, (jPointer + 1).pointee) {
+                        j += 1
+                        jPointer += 1
+                    }
+                    if !ordered(iPointer.pointee, jPointer.pointee) { break }
+                    
+                    swap(iPointer, jPointer)
+                    
+                    i = j
+                    j = 2 * i + 1
+                    iPointer = jPointer
+                    jPointer = first + j
+                }
+            }
+            return true
         }
+        if removed {
+            heap.removeLast()
+        }
+        
+//        if let index = heap.firstIndex(of: item) {
+//            heap.swapAt(index, heap.count - 1)
+//            heap.removeLast()
+//            if index < heap.count { // if we removed the last item, nothing to swim
+//                swim(index)
+//                sink(index)
+//            }
+//        }
     }
     
     /// Removes all occurences of a particular item. Finds it by value comparison using ==. O(n)
