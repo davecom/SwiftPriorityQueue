@@ -156,6 +156,44 @@ class SwiftPriorityQueueTests: XCTestCase {
         XCTAssertEqual(expected, actual)
     }
     
+    func testBuildPerformance() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
+        let input: [Int] = Array((0 ..< 100000))
+        measure {
+            pq = PriorityQueue(ascending: true, startingValues: input)
+        }
+        
+        let actual = Array(pq)
+        XCTAssertEqual(input, actual)
+    }
+    
+    func testPopPerformance() {
+        measure {
+            var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
+            for _ in 0 ..< 100000 {
+                pq.pop()
+            }
+        }
+    }
+    
+    func testPushPerformance() {
+        measure {
+            var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
+            for i in 0 ..< 100000 {
+                pq.push(i)
+            }
+        }
+    }
+    
+    func testRemovePerformance() {
+        var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
+        measure {
+            for _ in 0 ..< 100 {
+                pq.remove(pq.randomElement()!)
+            }
+        }
+    }
+    
     static var allTests = [
         ("testCustomOrder", testCustomOrder),
         ("testBasic", testBasic),
@@ -165,6 +203,10 @@ class SwiftPriorityQueueTests: XCTestCase {
         ("testPeek", testPeek),
         ("testRemove", testRemove),
         ("testRemoveAll", testRemoveAll),
-        ("testRemoveLastInHeap", testRemoveLastInHeap)
+        ("testRemoveLastInHeap", testRemoveLastInHeap),
+        ("testBuildPerformance", testBuildPerformance),
+        ("testPopPerformance", testPopPerformance),
+        ("testPushPerformance", testPushPerformance),
+        ("testRemovePerformance", testRemovePerformance)
         ]
 }

@@ -24,6 +24,53 @@
 
 // This code was inspired by Section 2.4 of Algorithms by Sedgewick & Wayne, 4th Edition
 
+internal extension UnsafeMutablePointer {
+    @usableFromInline
+    func swapAt(_ i: Int, _ j: Int) {
+        if _slowPath(i == j) { return }
+        let t = (self + i).move()
+        (self + i).moveAssign(from: (self + j), count: 1)
+        (self + j).initialize(to: t)
+    }
+}
+
+@inlinable
+internal func sink<T>(_ heap: UnsafeMutablePointer<T>, length: Int, index: Int, ordered: (T,T) -> Bool) {
+    var index = index
+    var j = 2 * index + 1
+    while j < length {
+        
+        if j < (length - 1) && ordered(heap[j], heap[j + 1]) { j += 1 }
+        if !ordered(heap[index], heap[j]) { break }
+        
+        heap.swapAt(index, j)
+        
+        index = j
+        j = 2 * index + 1
+    }
+    
+}
+
+@inlinable
+internal func swim<T>(_ heap: UnsafeMutablePointer<T>, index: Int, ordered: (T,T) -> Bool) {
+    var index = index
+    var j = (index - 1) / 2
+    while index > 0 && ordered(heap[j], heap[index]) {
+        heap.swapAt(j, index)
+        index = j
+        j = (index - 1) / 2
+    }
+}
+
+@inlinable
+internal func heapify<T>(_ heap: UnsafeMutablePointer<T>, length: Int, ordered: (T,T) -> Bool) {
+    var i = length/2 - 1
+    while i >= 0 {
+        sink(heap, length: length, index: i, ordered: ordered)
+        i -= 1
+    }
+}
+
 /// A PriorityQueue takes objects to be pushed of any type that implements Comparable.
 /// It will pop the objects in the order that they would be sorted. A pop() or a push()
 /// can be accomplished in O(lg n) time. It can be specified whether the objects should
