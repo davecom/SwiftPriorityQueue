@@ -68,7 +68,6 @@ internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>
 internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ : UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool,
                                    length: Int)
 {
-    typealias difference_type = Int
     if (length > 1)
     {
         var pIndex: Int = 0
@@ -170,18 +169,30 @@ internal func make_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last:
 @inlinable
 internal func __heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ last: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
     var n = (length - 2) / 2
+    var i: Int
+    var j: Int
+    var iPointer: UnsafeMutablePointer<T>
+    var jPointer: UnsafeMutablePointer<T>
     while n >= 0 {
-        var i = n
-        while 2 * i + 1 < length {
+        i = n
+        j = 2 * i + 1
+        iPointer = first + i
+        jPointer = first + j
+        
+        while j < length {
             
-            var j = 2 * i + 1
+            if j < (length - 1) && isOrderedBefore(jPointer, jPointer + 1) {
+                j += 1
+                jPointer += 1
+            }
+            if !isOrderedBefore(iPointer, jPointer) { break }
             
-            if j < (length - 1) && isOrderedBefore(first + j, first + j + 1) { j += 1 }
-            if !isOrderedBefore(first + i, first + j) { break }
-            
-            swap(first + i, first + j)
+            swap(iPointer, jPointer)
             
             i = j
+            j = 2 * i + 1
+            iPointer = jPointer
+            jPointer = first + j
         }
         n -= 1
     }
