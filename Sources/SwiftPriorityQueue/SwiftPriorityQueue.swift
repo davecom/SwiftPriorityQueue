@@ -25,30 +25,50 @@
 // This code was inspired by Section 2.4 of Algorithms by Sedgewick & Wayne, 4th Edition
 
 prefix operator --
+
 prefix operator ++
 
 extension UnsafeMutablePointer {
+    
+    
+    /// Decrement and return
+    ///
+    /// Decrement the pointer by 1 and return the resulting pointer.
+    /// - Parameter operand: operand
     @usableFromInline
-    static prefix func --(lhs: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
-        lhs -= 1
-        return lhs
+    static prefix func --(operand: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
+        operand -= 1
+        return operand
     }
     
+    /// Increment and return
+    ///
+    /// Increment the pointer by 1 and return the resulting pointer.
+    /// - Parameter operand: operand
     @usableFromInline
-    static prefix func ++(lhs: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
-        lhs += 1
-        return lhs
+    static prefix func ++(operand: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
+        operand += 1
+        return operand
     }
 }
 
 
 extension Int {
+    
+    /// Decrement and return
+    ///
+    /// Decrement the value by 1 and return the resulting value.
+    /// - Parameter operand: operand
     @usableFromInline
     static prefix func --(lhs: inout Int) -> Int {
         lhs -= 1
         return lhs
     }
     
+    /// Increment and return
+    ///
+    /// Increment the value by 1 and return the resulting value.
+    /// - Parameter operand: operand
     @usableFromInline
     static prefix func ++(lhs: inout Int) -> Int {
         lhs += 1
@@ -56,6 +76,12 @@ extension Int {
     }
 }
 
+
+/// Swap by reference
+///
+/// Swap the values pointed to by the two pointers.
+/// - Parameter a: first pointer
+/// - Parameter b: second pointer
 @usableFromInline
 internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>) {
     let t = a.move()
@@ -63,104 +89,20 @@ internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>
     b.initialize(to: t)
 }
 
-
+/// Heapify an array
+///
+/// Helper function for `SwiftPriorityQueue`.
+///
+/// Functionally equivalent to `heapify(array)`.
+///
+/// No assumptions are made about the initial order of the heap.
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter isOrderedAfter: Ordering function. Returns true if `a.pointee` comes after `b.pointee`.
+/// - Parameter a: The first pointer
+/// - Parameter b: The second pointer
+/// - Parameter length: Length of the heap
 @inlinable
-internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool,
-                                   _ length: Int)
-{
-    if (length > 1)
-    {
-        var pIndex: Int = 0
-        var pPointer = first
-        var cIndex: Int = 2
-        var cPointer = first + cIndex
-        if (cIndex == length || isOrderedBefore(cPointer, (cPointer - 1)))
-        {
-            cIndex -= 1
-            cPointer -= 1
-        }
-        if (isOrderedBefore(pPointer, cPointer))
-        {
-            var temp = pPointer.move()
-            repeat {
-                pPointer.moveInitialize(from: cPointer, count: 1)
-                pPointer = cPointer;
-                pIndex = cIndex;
-                cIndex = (pIndex + 1) * 2;
-                if (cIndex > length) {
-                    break;
-                }
-                cPointer = first + cIndex;
-                if (cIndex == length || isOrderedBefore(cPointer, (cPointer - 1)))
-                {
-                    cIndex -= 1
-                    cPointer -= 1
-                }
-            } while (isOrderedBefore(&temp, cPointer));
-            pPointer.initialize(to: temp)
-        }
-    }
-}
-
-@inlinable
-internal func __push_heap_back<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int)
-{
-    
-    var len = length
-    var last = first + length
-    
-    if (len > 1)
-    {
-        len = (len - 2) / 2;
-        var ptr = first + len;
-        if (isOrderedBefore(ptr, --last))
-        {
-            var t = last.move()
-            repeat {
-                last.moveInitialize(from: ptr, count: 1)
-                last = ptr;
-                if (len == 0) {
-                    break;
-                }
-                len = (len - 1) / 2;
-                ptr = first + len;
-            } while (isOrderedBefore(ptr, &t));
-            last.initialize(to: t)
-        }
-    }
-}
-
-@inlinable
-internal func __pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
-    let newLength = length - 1
-    let newLast = first + newLength
-    if length > 1 {
-        swap(first, newLast)
-        __push_heap_front(first, isOrderedBefore, newLength)
-    }
-}
-
-@inlinable
-internal func push_heap_back<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool) {
-    __push_heap_back(first, {ordered($0.pointee, $1.pointee)}, length)
-}
-
-@inlinable
-internal func push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
-    __push_heap_back(first, {ordered($0.pointee, $1.pointee)}, length)
-}
-
-@inlinable
-internal func pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool) {
-    __pop_heap(first, {ordered($0.pointee, $1.pointee)}, length)
-}
-@inlinable
-internal func pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
-    __pop_heap(first, {ordered($0.pointee, $1.pointee)}, length)
-}
-
-@inlinable
-internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
+internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedAfter: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
     var n = (length - 2) / 2
     var i: Int
     var j: Int
@@ -174,11 +116,11 @@ internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: 
         
         while j < length {
             
-            if j < (length - 1) && isOrderedBefore(jPointer, jPointer + 1) {
+            if j < (length - 1) && isOrderedAfter(jPointer, jPointer + 1) {
                 j += 1
                 jPointer += 1
             }
-            if !isOrderedBefore(iPointer, jPointer) { break }
+            if !isOrderedAfter(iPointer, jPointer) { break }
             
             swap(iPointer, jPointer)
             
@@ -191,12 +133,183 @@ internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: 
     }
 }
 
+/// Correctly position the first item of a heap
+///
+/// Helper function for `SwiftPriorityQueue`.
+///
+/// Equivalent to `sink(0)`. Assumes the remainder of the heap is valid.
+///
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter isOrderedAfter: Ordering function. Returns true if `a.pointee` comes after `b.pointee`.
+/// - Parameter a: The first pointer
+/// - Parameter b: The second pointer
+/// - Parameter length: Length of the heap
+///
+/// - Note: Inspired by [libcxx/include/algorithm](https://github.com/google/libcxx/blob/master/include/algorithm)
 @inlinable
-internal func heapify<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, ordered: (T, T) -> Bool) {
-    __heapify(first, {ordered($0.pointee, $1.pointee)}, length)
+internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedAfter: (_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>) -> Bool,
+                                   _ length: Int)
+{
+    if (length > 1)
+    {
+        var pIndex: Int = 0
+        var pPointer = first
+        var cIndex: Int = 2
+        var cPointer = first + cIndex
+        if (cIndex == length || isOrderedAfter(cPointer, (cPointer - 1)))
+        {
+            cIndex -= 1
+            cPointer -= 1
+        }
+        if (isOrderedAfter(pPointer, cPointer))
+        {
+            var temp = pPointer.move()
+            repeat {
+                pPointer.moveInitialize(from: cPointer, count: 1)
+                pPointer = cPointer;
+                pIndex = cIndex;
+                cIndex = (pIndex + 1) * 2;
+                if (cIndex > length) {
+                    break;
+                }
+                cPointer = first + cIndex;
+                if (cIndex == length || isOrderedAfter(cPointer, (cPointer - 1)))
+                {
+                    cIndex -= 1
+                    cPointer -= 1
+                }
+            } while (isOrderedAfter(&temp, cPointer));
+            pPointer.initialize(to: temp)
+        }
+    }
 }
+
+/// Correctly position the last item of a heap
+///
+/// Helper function for `SwiftPriorityQueue`.
+///
+/// Functionally equivalent to `swim(length - 1)`. Assumes the remainder of the heap is valid.
+///
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter isOrderedAfter: Ordering function. Returns true if `a.pointee` comes after `b.pointee`.
+/// - Parameter a: The first pointer
+/// - Parameter b: The second pointer
+/// - Parameter length: Length of the heap
+///
+/// - Note: Inspired by [libcxx/include/algorithm](https://github.com/google/libcxx/blob/master/include/algorithm)
 @inlinable
-internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, ordered: (T, T) -> Bool  = { $0 < $1 } ) {
+internal func __push_heap_back<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedAfter: (_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>) -> Bool, _ length: Int)
+{
+    
+    var len = length
+    var last = first + length
+    
+    if (len > 1)
+    {
+        len = (len - 2) / 2;
+        var ptr = first + len;
+        if (isOrderedAfter(ptr, --last))
+        {
+            var t = last.move()
+            repeat {
+                last.moveInitialize(from: ptr, count: 1)
+                last = ptr;
+                if (len == 0) {
+                    break;
+                }
+                len = (len - 1) / 2;
+                ptr = first + len;
+            } while (isOrderedAfter(ptr, &t));
+            last.initialize(to: t)
+        }
+    }
+}
+
+/// Pop an item from the heap
+///
+/// Helper function for `SwiftPriorityQueue`.
+///
+/// Functionally equivalent to:
+///
+///     swapAt(0, length - 1)
+///     let temp = removeLast()
+///     sink(0)
+///     append(temp)
+///
+/// The popped item is moved to the end of the heap ready for removal. Assumes the remainder of the heap is valid.
+///
+///
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter isOrderedAfter: Ordering function. Returns true if `a.pointee` comes after `b.pointee`.
+/// - Parameter a: The first pointer
+/// - Parameter b: The second pointer
+/// - Parameter length: Length of the heap
+///
+/// - Note: Inspired by [libcxx/include/algorithm](https://github.com/google/libcxx/blob/master/include/algorithm)
+@inlinable
+internal func __pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedAfter: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
+    let newLength = length - 1
+    let newLast = first + newLength
+    if length > 1 {
+        swap(first, newLast)
+        __push_heap_front(first, isOrderedAfter, newLength)
+    }
+}
+
+/// Correctly position the last item of a heap
+///
+/// Helper function for `SwiftPriorityQueue`.
+///
+/// Functionally equivalent to `swim(length - 1)`. Assumes the remainder of the heap is valid.
+///
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter ordered: Ordering function. Returns true if `a` and `b` are correcly ordered. Defaults to `<`.
+/// - Parameter a: The first element
+/// - Parameter b: The second element
+/// - Parameter length: Length of the heap
+@inlinable
+internal func push_heap_back<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (_ a: T, _ b: T) -> Bool = { $0 < $1 } ) {
+    __push_heap_back(first, {ordered($0.pointee, $1.pointee)}, length)
+}
+
+/// Pop an item from the heap
+///
+/// Helper function for `SwiftPriorityQueue`.
+///
+/// Functionally equivalent to:
+///
+///     swapAt(0, length - 1)
+///     let temp = removeLast()
+///     sink(0)
+///     append(temp)
+///
+/// The popped item is moved to the end of the heap ready for removal. Assumes the remainder of the heap is valid.
+///
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter ordered: Ordering function. Returns true if `a` and `b` are correcly ordered. Defaults to `<`.
+/// - Parameter a: The first element
+/// - Parameter b: The second element
+/// - Parameter length: Length of the heap
+@inlinable
+internal func pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (_ a: T, _ b: T) -> Bool = { $0 < $1 } ) {
+    __pop_heap(first, {ordered($0.pointee, $1.pointee)}, length)
+}
+
+/// Heapify an array
+///
+/// Helper function for `SwiftPriorityQueue`
+///
+/// Functionally equivalent to: `heapify(array)`
+///
+/// No assumptions are made about the initial order of the heap.
+///
+/// - Parameter first: Pointer to the first element of the heap
+/// - Parameter ordered: Ordering function. Returns true if `a` and `b` are correcly ordered. Defaults to `<`.
+/// - Parameter a: The first element
+/// - Parameter b: The second element
+/// - Parameter length: Length of the heap
+@inlinable
+internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, ordered: (_ a: T, _ b: T) -> Bool = { $0 < $1 } ) {
     __heapify(first, {ordered($0.pointee, $1.pointee)}, length)
 }
 
@@ -225,8 +338,10 @@ public struct PriorityQueue<T: Comparable> {
     /// - parameter order: A function that specifies whether its first argument should
     ///                    come after the second argument in the PriorityQueue.
     /// - parameter startingValues: An array of elements to initialize the PriorityQueue with.
+    /// - parameter a: first argument
+    /// - parameter b: second argument
     @inlinable
-    public init(order: @escaping (T, T) -> Bool, startingValues: [T] = []) {
+    public init(order: @escaping (_ a: T, _ b: T) -> Bool, startingValues: [T] = []) {
         ordered = order
         
         // Based on "Heap construction" from Sedgewick p 323
@@ -408,30 +523,6 @@ public struct PriorityQueue<T: Comparable> {
     public mutating func clear() {
         heap.removeAll(keepingCapacity: false)
     }
-    
-    // Based on example from Sedgewick p 316
-    private mutating func sink(_ index: Int) {
-        var index = index
-        while 2 * index + 1 < heap.count {
-            
-            var j = 2 * index + 1
-            
-            if j < (heap.count - 1) && ordered(heap[j], heap[j + 1]) { j += 1 }
-            if !ordered(heap[index], heap[j]) { break }
-            
-            heap.swapAt(index, j)
-            index = j
-        }
-    }
-    
-    // Based on example from Sedgewick p 316
-    private mutating func swim(_ index: Int) {
-        var index = index
-        while index > 0 && ordered(heap[(index - 1) / 2], heap[index]) {
-            heap.swapAt((index - 1) / 2, index)
-            index = (index - 1) / 2
-        }
-    }
 }
 
 // MARK: - GeneratorType
@@ -476,8 +567,8 @@ extension PriorityQueue: Collection {
 extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
     
     @inlinable
-    public var description: String { return heap.description }
+    public var description: String { return String(describing: heap) }
     
     @inlinable
-    public var debugDescription: String { return heap.debugDescription }
+    public var debugDescription: String { return String(reflecting: heap) }
 }
