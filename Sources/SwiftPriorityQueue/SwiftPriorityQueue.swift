@@ -24,55 +24,17 @@
 
 // This code was inspired by Section 2.4 of Algorithms by Sedgewick & Wayne, 4th Edition
 
-prefix operator --
 
-prefix operator ++
-
-extension UnsafeMutablePointer {
-    
+internal extension UnsafeMutablePointer {
     
     /// Decrement and return
     ///
     /// Decrement the pointer by 1 and return the resulting pointer.
     /// - Parameter operand: operand
     @usableFromInline
-    static prefix func --(operand: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
-        operand -= 1
-        return operand
-    }
-    
-    /// Increment and return
-    ///
-    /// Increment the pointer by 1 and return the resulting pointer.
-    /// - Parameter operand: operand
-    @usableFromInline
-    static prefix func ++(operand: inout UnsafeMutablePointer) -> UnsafeMutablePointer {
-        operand += 1
-        return operand
-    }
-}
-
-
-extension Int {
-    
-    /// Decrement and return
-    ///
-    /// Decrement the value by 1 and return the resulting value.
-    /// - Parameter operand: operand
-    @usableFromInline
-    static prefix func --(lhs: inout Int) -> Int {
-        lhs -= 1
-        return lhs
-    }
-    
-    /// Increment and return
-    ///
-    /// Increment the value by 1 and return the resulting value.
-    /// - Parameter operand: operand
-    @usableFromInline
-    static prefix func ++(lhs: inout Int) -> Int {
-        lhs += 1
-        return lhs
+    mutating func decrementAndReturn() -> UnsafeMutablePointer {
+        self -= 1
+        return self
     }
 }
 
@@ -104,14 +66,12 @@ internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>
 @inlinable
 internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedAfter: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool, _ length: Int) {
     var n = (length - 2) / 2
-    var i: Int
     var j: Int
     var iPointer: UnsafeMutablePointer<T>
     var jPointer: UnsafeMutablePointer<T>
     while n >= 0 {
-        i = n
-        j = 2 * i + 1
-        iPointer = first + i
+        j = 2 * n + 1
+        iPointer = first + n
         jPointer = first + j
         
         while j < length {
@@ -124,8 +84,7 @@ internal func __heapify<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedAfter: (
             
             swap(iPointer, jPointer)
             
-            i = j
-            j = 2 * i + 1
+            j = 2 * j + 1
             iPointer = jPointer
             jPointer = first + j
         }
@@ -208,7 +167,7 @@ internal func __push_heap_back<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedA
     {
         len = (len - 2) / 2;
         var ptr = first + len;
-        if (isOrderedAfter(ptr, --last))
+        if (isOrderedAfter(ptr, last.decrementAndReturn()))
         {
             var t = last.move()
             repeat {
