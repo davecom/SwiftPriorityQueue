@@ -66,7 +66,7 @@ internal func swap<T>(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>
 
 @inlinable
 internal func __push_heap_front<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool,
-                                   length: Int)
+                                   _ length: Int)
 {
     if (length > 1)
     {
@@ -136,7 +136,7 @@ internal func __pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore:
     let newLast = first + newLength
     if length > 1 {
         swap(first, newLast)
-        __push_heap_front(first, isOrderedBefore, length: newLength)
+        __push_heap_front(first, isOrderedBefore, newLength)
     }
 }
 
@@ -157,11 +157,6 @@ internal func pop_heap<T>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ord
 @inlinable
 internal func pop_heap<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length: Int, _ ordered: (T, T) -> Bool = { $0 < $1 } ) {
     __pop_heap(first, {ordered($0.pointee, $1.pointee)}, length)
-}
-
-@inlinable
-internal func __remove_heap<T>(_ first: UnsafeMutablePointer<T>, _ isOrderedBefore: (UnsafeMutablePointer<T>, UnsafeMutablePointer<T>) -> Bool) {
-    
 }
 
 @inlinable
@@ -205,6 +200,7 @@ internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length:
     __heapify(first, {ordered($0.pointee, $1.pointee)}, length)
 }
 
+// MARK: -
 
 /// A PriorityQueue takes objects to be pushed of any type that implements Comparable.
 /// It will pop the objects in the order that they would be sorted. A pop() or a push()
@@ -213,9 +209,13 @@ internal func heapify<T: Comparable>(_ first: UnsafeMutablePointer<T>, _ length:
 /// at the time of initialization.
 public struct PriorityQueue<T: Comparable> {
     
+    @usableFromInline
     internal var heap = [T]()
+    
+    @usableFromInline
     internal let ordered: (T, T) -> Bool
     
+    @inlinable
     public init(ascending: Bool = false, startingValues: [T] = []) {
         self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
     }
@@ -225,6 +225,7 @@ public struct PriorityQueue<T: Comparable> {
     /// - parameter order: A function that specifies whether its first argument should
     ///                    come after the second argument in the PriorityQueue.
     /// - parameter startingValues: An array of elements to initialize the PriorityQueue with.
+    @inlinable
     public init(order: @escaping (T, T) -> Bool, startingValues: [T] = []) {
         ordered = order
         
@@ -239,14 +240,17 @@ public struct PriorityQueue<T: Comparable> {
     }
     
     /// How many elements the Priority Queue stores
+    @inlinable
     public var count: Int { return heap.count }
     
     /// true if and only if the Priority Queue is empty
+    @inlinable
     public var isEmpty: Bool { return heap.isEmpty }
     
     /// Add a new element onto the Priority Queue. O(lg n)
     ///
     /// - parameter element: The element to be inserted into the Priority Queue.
+    @inlinable
     public mutating func push(_ element: T) {
         heap.append(element)
         heap.withUnsafeMutableBufferPointer { bufferPointer in
@@ -260,6 +264,7 @@ public struct PriorityQueue<T: Comparable> {
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
     ///
     /// - returns: The element with the highest priority in the Priority Queue, or nil if the PriorityQueue is empty.
+    @inlinable
     public mutating func pop() -> T? {
         
         if heap.isEmpty { return nil }
@@ -277,76 +282,110 @@ public struct PriorityQueue<T: Comparable> {
     /// Silently exits if no occurrence found.
     ///
     /// - parameter item: The item to remove the first occurrence of.
+    @inlinable
     public mutating func remove(_ item: T) {
         
+        
+        /// closure returns true if an item was found and moved to the end
         let removed = heap.withUnsafeMutableBufferPointer { bufferPointer -> Bool in
             guard let first = bufferPointer.baseAddress else { return false }
+            
+            /// pointer to after the last item in the heap
             let last = first + bufferPointer.count
-            var index = first
+            
+            /// pointer to found item
+            var current = first
+            
+            /// item was found
             var found = true
-            while index.pointee != item {
-                index += 1
-                if index == last {
+            
+            // loop through the array to find the item
+            while current.pointee != item {
+                current += 1
+                if current == last {
                     found = false
                     break
                 }
             }
+            // if not found, no need to go further
             guard found else { return false }
             
-            swap(index, last - 1)
-            // now ignore last heap element and act as if it is one element shorter
+            /// index of item in heap
+            let index = current - first
+            
+            
+            // now ignore last item of `heap` and act as if `heap` is one element shorter
+            
+            /// length of heap with found item removed
             let length = bufferPointer.count - 1
-            if index < last - 1 {
-                // swim
-                var i = index - first
-                var j = (i - 1) / 2
-                while i > 0 && ordered((first + j).pointee, (first + i).pointee) {
-                    swap(first + j, first + i)
-                    i = j
-                    j = (i - 1) / 2
+            
+            // only necessary if the item found was not the last in the heap
+            if current < last - 1 {
+                
+                @_transparent
+                func orderedRef(_ a: UnsafeMutablePointer<T>, _ b: UnsafeMutablePointer<T>) -> Bool {
+                    return self.ordered(a.pointee, b.pointee)
                 }
-                // sink
-                i = index - first
-                j = 2 * i + 1
-                var iPointer = first + i
-                var jPointer = first + j
+                
+                // swap found item with last item of heap
+                swap(current, last - 1)
+                
+                /**
+                 * this code implements `swim`
+                 */
+                
+                var j = (index - 1) / 2
+                
+                var node = current
+                var nextNode = first + j    // nextNode is the parent node
+                
+                while node > first && orderedRef(nextNode, node) {
+                    swap(nextNode, node)
+                    node = nextNode
+                    j = (j - 1) / 2
+                    nextNode = first + j
+                }
+                
+                // if node has changed, sink is unneccessary
+                if node != current {
+                    return true
+                }
+                
+                /**
+                 * this code implements `sink`
+                 */
+                
+                j = 2 * index + 1
+                nextNode = first + j    // nextNode is the left child
                 
                 while j < length {
                     
-                    if j < (length - 1) && ordered(jPointer.pointee, (jPointer + 1).pointee) {
+                    if j < (length - 1) && orderedRef(nextNode, (nextNode + 1)) {
                         j += 1
-                        jPointer += 1
+                        nextNode += 1
                     }
-                    if !ordered(iPointer.pointee, jPointer.pointee) { break }
+                    if !orderedRef(node, nextNode) { break }
                     
-                    swap(iPointer, jPointer)
+                    swap(node, nextNode)
                     
-                    i = j
-                    j = 2 * i + 1
-                    iPointer = jPointer
-                    jPointer = first + j
+                    j = 2 * j + 1
+                    node = nextNode
+                    nextNode = first + j
                 }
             }
             return true
         }
+        // found item was moved to the end and must be removed
         if removed {
             heap.removeLast()
         }
-        
-//        if let index = heap.firstIndex(of: item) {
-//            heap.swapAt(index, heap.count - 1)
-//            heap.removeLast()
-//            if index < heap.count { // if we removed the last item, nothing to swim
-//                swim(index)
-//                sink(index)
-//            }
-//        }
     }
     
     /// Removes all occurences of a particular item. Finds it by value comparison using ==. O(n)
     /// Silently exits if no occurrence found.
     ///
     /// - parameter item: The item to remove.
+    @inlinable
     public mutating func removeAll(_ item: T) {
         var lastCount = heap.count
         remove(item)
@@ -359,11 +398,13 @@ public struct PriorityQueue<T: Comparable> {
     /// Get a look at the current highest priority item, without removing it. O(1)
     ///
     /// - returns: The element with the highest priority in the PriorityQueue, or nil if the PriorityQueue is empty.
+    @inlinable
     public func peek() -> T? {
         return heap.first
     }
     
     /// Eliminate all of the elements from the Priority Queue.
+    @inlinable
     public mutating func clear() {
         heap.removeAll(keepingCapacity: false)
     }
@@ -397,6 +438,8 @@ public struct PriorityQueue<T: Comparable> {
 extension PriorityQueue: IteratorProtocol {
     
     public typealias Element = T
+    
+    @inlinable
     mutating public func next() -> Element? { return pop() }
 }
 
@@ -404,6 +447,8 @@ extension PriorityQueue: IteratorProtocol {
 extension PriorityQueue: Sequence {
     
     public typealias Iterator = PriorityQueue
+    
+    @inlinable
     public func makeIterator() -> Iterator { return self }
 }
 
@@ -412,11 +457,16 @@ extension PriorityQueue: Collection {
     
     public typealias Index = Int
     
+    @inlinable
     public var startIndex: Int { return heap.startIndex }
+    
+    @inlinable
     public var endIndex: Int { return heap.endIndex }
     
+    @inlinable
     public subscript(i: Int) -> T { return heap[i] }
     
+    @inlinable
     public func index(after i: PriorityQueue.Index) -> PriorityQueue.Index {
         return heap.index(after: i)
     }
@@ -425,6 +475,9 @@ extension PriorityQueue: Collection {
 // MARK: - CustomStringConvertible, CustomDebugStringConvertible
 extension PriorityQueue: CustomStringConvertible, CustomDebugStringConvertible {
     
+    @inlinable
     public var description: String { return heap.description }
+    
+    @inlinable
     public var debugDescription: String { return heap.debugDescription }
 }
