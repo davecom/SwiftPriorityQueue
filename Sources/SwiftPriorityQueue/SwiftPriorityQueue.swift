@@ -176,7 +176,7 @@ public struct PriorityQueue<T: Comparable> {
                 
                 heapPointer.swapAt(index, bufferPointer.count - 1)
                 swim(heapPointer, index: index, ordered: ordered)
-                sink(heapPointer, length: bufferPointer.count - 1, index: 0, ordered: ordered)
+                sink(heapPointer, length: bufferPointer.count - 1, index: index, ordered: ordered)
             }
             heap.removeLast()
             
