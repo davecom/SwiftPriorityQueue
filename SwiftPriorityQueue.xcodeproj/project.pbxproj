@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		551E58BB1F770580007073B0 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */; };
 		551E58BC1F770583007073B0 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */; };
+		55296F0B2340508A007F53CC /* SwiftPriorityQueuePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55296F0A2340508A007F53CC /* SwiftPriorityQueuePerformanceTests.swift */; };
 		553948251AC6495600666559 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553948241AC6495600666559 /* AppDelegate.swift */; };
 		553948271AC6495600666559 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553948261AC6495600666559 /* Images.xcassets */; };
 		5539482A1AC6495600666559 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 553948281AC6495600666559 /* MainMenu.xib */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		551E58BA1F770580007073B0 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueue.swift; path = Sources/SwiftPriorityQueue/SwiftPriorityQueue.swift; sourceTree = SOURCE_ROOT; };
+		55296F0A2340508A007F53CC /* SwiftPriorityQueuePerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftPriorityQueuePerformanceTests.swift; path = Tests/SwiftPriorityQueueTests/SwiftPriorityQueuePerformanceTests.swift; sourceTree = SOURCE_ROOT; };
 		5539481F1AC6495600666559 /* SwiftPriorityQueue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftPriorityQueue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		553948231AC6495600666559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553948241AC6495600666559 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				5565CDFA2249BE24002664E3 /* SwiftPriorityQueueTests.swift */,
+				55296F0A2340508A007F53CC /* SwiftPriorityQueuePerformanceTests.swift */,
 				553948331AC6495600666559 /* Supporting Files */,
 			);
 			path = SwiftPriorityQueueTests;
@@ -159,7 +162,7 @@
 			attributes = {
 				LastSwiftMigration = 0710;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Oak Snow Consulting";
 				TargetAttributes = {
 					5539481E1AC6495600666559 = {
@@ -227,6 +230,7 @@
 			files = (
 				551E58BC1F770583007073B0 /* SwiftPriorityQueue.swift in Sources */,
 				5565CDFB2249BE24002664E3 /* SwiftPriorityQueueTests.swift in Sources */,
+				55296F0B2340508A007F53CC /* SwiftPriorityQueuePerformanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +360,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SwiftPriorityQueue/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -369,6 +374,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SwiftPriorityQueue/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
