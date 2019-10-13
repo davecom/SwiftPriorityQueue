@@ -44,8 +44,8 @@ class SwiftPriorityQueuePerformanceTests: XCTestCase {
     
     func testPushPerformance() {
         measure {
-            var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
             for i in 0 ..< 100000 {
+                var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
                 pq.push(i)
             }
         }
