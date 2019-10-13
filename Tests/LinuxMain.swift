@@ -3,4 +3,5 @@ import XCTest
 
 XCTMain([
     testCase(SwiftPriorityQueueTests.allTests),
+    testCase(SwiftPriorityQueuePerformanceTests.allTests),
 ])

@@ -1,10 +1,26 @@
 //
 //  SwiftPriorityQueueTests.swift
-//  SwiftPriorityQueueTests
+//  SwiftPriorityQueue
 //
-//  Created by David Kopec on 3/27/15.
-//  Copyright (c) 2015-2017 Oak Snow Consulting. All rights reserved.
+//  Copyright (c) 2015-2019 David Kopec
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 
 import XCTest
 import Foundation
@@ -156,44 +172,6 @@ class SwiftPriorityQueueTests: XCTestCase {
         XCTAssertEqual(expected, actual)
     }
     
-    func testBuildPerformance() {
-        var pq: PriorityQueue<Int> = PriorityQueue<Int>()
-        let input: [Int] = Array((0 ..< 100000))
-        measure {
-            pq = PriorityQueue(ascending: true, startingValues: input)
-        }
-        
-        let actual = Array(pq)
-        XCTAssertEqual(input, actual)
-    }
-    
-    func testPopPerformance() {
-        measure {
-            var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
-            for _ in 0 ..< 100000 {
-                pq.pop()
-            }
-        }
-    }
-    
-    func testPushPerformance() {
-        measure {
-            var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
-            for i in 0 ..< 100000 {
-                pq.push(i)
-            }
-        }
-    }
-    
-    func testRemovePerformance() {
-        var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
-        measure {
-            for _ in 0 ..< 100 {
-                pq.remove(pq.randomElement()!)
-            }
-        }
-    }
-    
     static var allTests = [
         ("testCustomOrder", testCustomOrder),
         ("testBasic", testBasic),
@@ -204,9 +182,5 @@ class SwiftPriorityQueueTests: XCTestCase {
         ("testRemove", testRemove),
         ("testRemoveAll", testRemoveAll),
         ("testRemoveLastInHeap", testRemoveLastInHeap),
-        ("testBuildPerformance", testBuildPerformance),
-        ("testPopPerformance", testPopPerformance),
-        ("testPushPerformance", testPushPerformance),
-        ("testRemovePerformance", testRemovePerformance)
         ]
 }
