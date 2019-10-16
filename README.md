@@ -67,7 +67,7 @@ Or you can specify neither. By default a `PriorityQueue` is descending and empty
 * `isEmpty: Bool` - `true` if the priority queue has zero elements, and `false` otherwise.
 
 ### Standard Swift Protocols
-`PriorityQueue` implements `ItereatorProtocol`, `Sequence` and `Collection` so you can treat `PriorityQueue` like any other Swift sequence/collection. This means you can use Swift standard library fucntions on a `PriorityQueue` and iterate through a `PriorityQueue` like this:
+`PriorityQueue` implements `IteratorProtocol`, `Sequence` and `Collection` so you can treat `PriorityQueue` like any other Swift sequence/collection. This means you can use Swift standard library fucntions on a `PriorityQueue` and iterate through a `PriorityQueue` like this:
 ```
 for item in pq {  // pq is a PriorityQueue<String>
     print(item)
