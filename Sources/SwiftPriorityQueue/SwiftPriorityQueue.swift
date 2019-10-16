@@ -75,13 +75,12 @@ public struct PriorityQueue<T: Comparable> {
     public mutating func pop() -> T? {
         
         if heap.isEmpty { return nil }
-        if heap.count == 1 { return heap.removeFirst() }  // added for Swift 2 compatibility
+        let count = heap.count
+        if count == 1 { return heap.removeFirst() }  // added for Swift 2 compatibility
         // so as not to call swap() with two instances of the same location
-        heap.swapAt(0, heap.count - 1)
-        let temp = heap.removeLast()
-        sink(0)
+        fastPop(newCount: count - 1)
         
-        return temp
+        return heap.removeLast()
     }
     
     
@@ -137,6 +136,27 @@ public struct PriorityQueue<T: Comparable> {
             
             heap.swapAt(index, j)
             index = j
+        }
+    }
+    
+    /// Helper function for pop.
+    ///
+    /// Swaps the first and last elements, then sinks the first element.
+    ///
+    /// After executing this function, calling `heap.removeLast()` returns the popped element.
+    /// - Parameter newCount: The number of elements in heap after the `pop()` operation is complete.
+    private mutating func fastPop(newCount: Int) {
+        var index = 0
+        heap.withUnsafeMutableBufferPointer { bufferPointer in
+            let _heap = bufferPointer.baseAddress! // guaranteed non-nil because count > 0
+            swap(&_heap[0], &_heap[newCount])
+            while 2 * index + 1 < newCount {
+                var j = 2 * index + 1
+                if j < (newCount - 1) && ordered(_heap[j], _heap[j+1]) { j += 1 }
+                if !ordered(_heap[index], _heap[j]) { return }
+                swap(&_heap[index], &_heap[j])
+                index = j
+            }
         }
     }
     
