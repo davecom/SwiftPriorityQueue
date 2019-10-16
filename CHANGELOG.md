@@ -1,3 +1,7 @@
+### 1.3.1
+- Improvements to pop() performance (thanks @peteraisher)
+- Some basic performance tests (thanks @peteraisher)
+
 ### 1.3.0
 - Swift 5 support
 
