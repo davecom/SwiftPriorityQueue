@@ -24,45 +24,47 @@ import XCTest
 @testable import SwiftPriorityQueue
 
 class SwiftPriorityQueuePerformanceTests: XCTestCase {
-
-     func testBuildPerformance() {
-           let input: [Int] = Array((0 ..< 100000))
-           measure {
-            let _: PriorityQueue<Int> = PriorityQueue(ascending: true, startingValues: input)
-           }
-       }
-       
-       func testPopPerformance() {
-        var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
+    
+    func testBuildPerformance() {
+        let input: [Int] = Array((0 ..< 100000))
         measure {
-               for _ in 0 ..< 100000 {
-                   let _ = pq.pop()
-               }
-           }
-       }
-       
-       func testPushPerformance() {
-            var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
-            measure {
-               for i in 0 ..< 100000 {
-                   pq.push(i)
-               }
-           }
-       }
-       
-       func testRemovePerformance() {
-           var pq = PriorityQueue(ascending: true, startingValues: Array(0 ..< 10000))
-           measure {
+            let _: PriorityQueue<Int> = PriorityQueue(ascending: true, startingValues: input)
+        }
+    }
+    
+    func testPopPerformance() {
+        let original = PriorityQueue(ascending: true, startingValues: Array(0 ..< 100000))
+        measure {
+            var pq = original
+            for _ in 0 ..< 100000 {
+                let _ = pq.pop()
+            }
+        }
+    }
+    
+    func testPushPerformance() {
+        measure {
+            for i in 0 ..< 100000 {
+                var pq = PriorityQueue<Int>(ascending: true, startingValues: [])
+                pq.push(i)
+            }
+        }
+    }
+    
+    func testRemovePerformance() {
+        let original = PriorityQueue(ascending: true, startingValues: Array(0 ..< 10000))
+        measure {
+            var pq = original
             for x in 0 ..< 100 {
-                   pq.remove(x * x)
-               }
-           }
-       }
-
+                pq.remove(x * x)
+            }
+        }
+    }
+    
     static var allTests = [
-    ("testBuildPerformance", testBuildPerformance),
-    ("testPopPerformance", testPopPerformance),
-    ("testPushPerformance", testPushPerformance),
-    ("testRemovePerformance", testRemovePerformance)
+        ("testBuildPerformance", testBuildPerformance),
+        ("testPopPerformance", testPopPerformance),
+        ("testPushPerformance", testPushPerformance),
+        ("testRemovePerformance", testRemovePerformance)
     ]
 }
