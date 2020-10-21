@@ -38,6 +38,41 @@ import Foundation
 
 class SwiftPriorityQueueTests: XCTestCase {
     
+    func testFastIteratingReturnsValuesInSameOrderOfIndexIteration() {
+        var pq = PriorityQueue<Int>(order: <, startingValues: [1, 2, 3, 4, 5])
+        
+        var fastIterationValues = [Int]()
+        var iter = pq.makeIterator()
+        while let element = iter.next() {
+            fastIterationValues.append(element)
+        }
+        
+        var indexIterationValues = [Int]()
+        for i in pq.startIndex..<pq.endIndex {
+            indexIterationValues.append(pq[i])
+        }
+        
+        XCTAssertEqual(fastIterationValues, indexIterationValues)
+        
+        // Let's also test with the other sort:
+        fastIterationValues.removeAll(keepingCapacity: true)
+        indexIterationValues.removeAll(keepingCapacity: true)
+        pq = PriorityQueue<Int>(order: >, startingValues: [5, 4, 3, 2, 1])
+        
+        iter = pq.makeIterator()
+        while let element = iter.next() {
+            fastIterationValues.append(element)
+        }
+        
+        var indexIterationValue = [Int]()
+        for i in pq.startIndex..<pq.endIndex {
+            indexIterationValue.append(pq[i])
+        }
+        
+        XCTAssertEqual(fastIterationValues, indexIterationValue)
+        
+    }
+    
     func testCustomOrder() {
         let priorities = [0: 5000, 1: 4000, 2: 3000, 3: 2000, 4: 1000, 5: 0]
         var pq: PriorityQueue<Int> = PriorityQueue<Int>(order: { priorities[$0]! > priorities[$1]! })
