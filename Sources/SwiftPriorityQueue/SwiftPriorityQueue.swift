@@ -56,9 +56,13 @@ public struct PriorityQueue<T: Comparable> {
     }
     
     /// How many elements the Priority Queue stores
+    ///
+    /// - Complexity: O(1)
     public var count: Int { return heap.count }
     
     /// true if and only if the Priority Queue is empty
+    ///
+    /// - Complexity: O(1)
     public var isEmpty: Bool { return heap.isEmpty }
     
     /// Add a new element onto the Priority Queue. O(lg n)
@@ -190,13 +194,34 @@ extension PriorityQueue: Collection {
     public typealias Index = Int
     
     public var startIndex: Int { return heap.startIndex }
+    
     public var endIndex: Int { return heap.endIndex }
     
-    public subscript(i: Int) -> T { return heap[i] }
+    /// Return the element at specified position.
+    ///
+    /// - Parameter position:   the index of the element to retireve.
+    ///                         **Must not be negative**
+    ///                         and **must be less greater than **
+    ///                         `endindex`.
+    /// - Complexity: O(log *n*) where *n* is the count of elements stored
+    ///               in the instance.
+    /// - Returns: the element at the specified position.
+    public subscript(position: Int) -> T {
+        precondition(
+            startIndex..<endIndex ~= position,
+            "SwiftPriorityQueue subscript: index out of bounds"
+        )
+        for (idx, element) in enumerated() where idx == position {
+            return element
+        }
+        preconditionFailure("SwiftPriorityQueue subscript: index out of bounds")
+    }
     
     public func index(after i: PriorityQueue.Index) -> PriorityQueue.Index {
         return heap.index(after: i)
     }
+    
+    
 }
 
 // MARK: - CustomStringConvertible, CustomDebugStringConvertible
