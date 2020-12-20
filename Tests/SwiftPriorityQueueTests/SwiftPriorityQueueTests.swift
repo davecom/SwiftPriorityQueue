@@ -70,7 +70,23 @@ class SwiftPriorityQueueTests: XCTestCase {
         }
         
         XCTAssertEqual(fastIterationValues, indexIterationValue)
+    }
+    
+    func testIteratingViaIndexesValueSemantics() {
+        var pq = PriorityQueue<Int>(order: <, startingValues: [1, 2, 3, 4, 5])
+        var expectedHeap = pq.heap
+        for i in pq.indices {
+            let _ = pq[i]
+        }
+        XCTAssertEqual(pq.heap, expectedHeap)
         
+        // Let's also test with the other sort:
+        pq = PriorityQueue<Int>(order: >, startingValues: [5, 4, 3, 2, 1])
+        expectedHeap = pq.heap
+        for i in pq.indices {
+            let _ = pq[i]
+        }
+        XCTAssertEqual(pq.heap, expectedHeap)
     }
     
     func testCustomOrder() {
