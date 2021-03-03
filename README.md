@@ -56,6 +56,7 @@ Or you can specify neither. By default a `PriorityQueue` is descending and empty
 ### Methods
 `PriorityQueue` has all of the standard methods you'd expect a priority queue data structure to have.
 * `push(element: T)` - Puts an element into the priority queue. O(lg n)
+* `push(element: T, maxHeap: Int)` - Attempts to put an element into an ‘inverted’ priority queue, with limitation on heap size. O(lg n)
 * `pop() -> T?` - Returns and removes the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(lg n)
 * `peek() -> T?` - Returns the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(1)
 * `clear()` - Removes all elements from the priority queue.
@@ -78,6 +79,29 @@ When you do this, every item from the `PriorityQueue` is popped in order. `Prior
 print(pq)
 ```
 Note: `PriorityQueue` is *not* thread-safe (do not manipulate it from multiple threads at once).
+
+### Limited Heap Size Example
+
+Two use cases in which you'll want to limit the heap size of a Priority Queue:
+
+1. Bulk insertion of data where memory is constrained.
+2. Only the ‘head’ of the Priority Queue is relevant and the ‘tail’ can be ignored.
+
+In such cases, create an ‘inverted’ Priority Queue (where the sort is reversed) and use the `push(element: T, maxHeap: Int)` method to add items to the queue. For example, where you want to prioritize the first four(4) elements in ascending order:
+
+```
+var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: false)  // inverted!
+let maxHeap = 4         
+                        // pq.reversed() output shown
+pq.push(4, maxHeap)     // [4]
+pq.push(5, maxHeap)     // [4, 5]
+pq.push(0, maxHeap)     // [0, 4, 5]
+pq.push(3, maxHeap)     // [0, 3, 4, 5]
+pq.push(6, maxHeap)     // [0, 3, 4, 5] (push of 6 is ignored)
+pq.push(1, maxHeap)     // [0, 1, 3, 4] (5 is discarded)
+```
+
+Note the use of `pq.reversed()` to show the values in ascending order.
 
 ### Just for Fun - A* (`astar.swift`)
 A* is a pathfinding algorithm that uses a priority queue. The sample program that comes with SwiftPriorityQueue is a maze solver that uses A*. You can find some in-source documentation if you want to reuse this algorithm inside `astar.swift`.

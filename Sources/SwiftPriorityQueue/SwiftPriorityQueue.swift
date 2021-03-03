@@ -69,6 +69,21 @@ public struct PriorityQueue<T: Comparable> {
         swim(heap.count - 1)
     }
     
+    /// Attempt to add a new element onto an 'inverted' Priority Queue, limiting its size. O(lg n)
+    ///
+    /// If the size limit has been reached and the element falls beyond the 'tail', it will be ignored.  If pushed, a single element at the 'tail' will be popped.
+    ///
+    /// - parameter element: The element to be attempted insertion into the Priority Queue.
+    /// - parameter maxHeap: The Priority Queue will not grow further if its size >= maxHeap.
+    public mutating func push(_ element: T, maxHeap: Int) {
+        precondition(maxHeap > 0)
+        if heap.count >= maxHeap {
+            if let peeked = peek(), !ordered(element, peeked) { return }
+            _ = pop()
+        }
+        push(element)
+    }
+
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
     ///
     /// - returns: The element with the highest priority in the Priority Queue, or nil if the PriorityQueue is empty.
