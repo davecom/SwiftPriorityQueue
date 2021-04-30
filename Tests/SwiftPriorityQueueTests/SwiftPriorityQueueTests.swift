@@ -226,36 +226,36 @@ class SwiftPriorityQueueTests: XCTestCase {
     func testPushWithLimitAscending() {
         var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: false)   // inverted
         let maxHeap = 4
-        pq.push(4, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(4, maxHeap: maxHeap))
         XCTAssertEqual([4], pq.reversed())
-        pq.push(5, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(5, maxHeap: maxHeap))
         XCTAssertEqual([4, 5], pq.reversed())
-        pq.push(0, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(0, maxHeap: maxHeap))
         XCTAssertEqual([0, 4, 5], pq.reversed())
-        pq.push(3, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(3, maxHeap: maxHeap))
         XCTAssertEqual([0, 3, 4, 5], pq.reversed())
-        pq.push(6, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(6, maxHeap: maxHeap))
         XCTAssertEqual([0, 3, 4, 5], pq.reversed())
-        pq.push(1, maxHeap: maxHeap)
+        XCTAssertEqual(5, pq.push(1, maxHeap: maxHeap))
         XCTAssertEqual([0, 1, 3, 4], pq.reversed())
     }
     
     func testPushWithLimitDescending() {
         var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: true)    // inverted
         let maxHeap = 4
-        pq.push(4, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(4, maxHeap: maxHeap))
         XCTAssertEqual([4], pq.reversed())
-        pq.push(5, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(5, maxHeap: maxHeap))
         XCTAssertEqual([5, 4], pq.reversed())
-        pq.push(2, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(2, maxHeap: maxHeap))
         XCTAssertEqual([5, 4, 2], pq.reversed())
-        pq.push(3, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(3, maxHeap: maxHeap))
         XCTAssertEqual([5, 4, 3, 2], pq.reversed())
-        pq.push(1, maxHeap: maxHeap)
+        XCTAssertNil(pq.push(1, maxHeap: maxHeap))
         XCTAssertEqual([5, 4, 3, 2], pq.reversed())
-        pq.push(6, maxHeap: maxHeap)
+        XCTAssertEqual(2, pq.push(6, maxHeap: maxHeap))
         XCTAssertEqual([6, 5, 4, 3], pq.reversed())
-        pq.push(6, maxHeap: maxHeap)
+        XCTAssertEqual(3, pq.push(6, maxHeap: maxHeap))
         XCTAssertEqual([6, 6, 5, 4], pq.reversed())
     }
     
