@@ -32,7 +32,7 @@
 public struct PriorityQueue<T: Comparable> {
     
     fileprivate(set) var heap = [T]()
-    private let ordered: (T, T) -> Bool
+    private var ordered: (T, T) -> Bool
     
     public init(ascending: Bool = false, startingValues: [T] = []) {
         self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
@@ -140,8 +140,9 @@ public struct PriorityQueue<T: Comparable> {
         return heap.first
     }
     
-    /// Eliminate all of the elements from the Priority Queue.
-    public mutating func clear() {
+    /// Eliminate all of the elements from the Priority Queue, optionally replacing the order.
+    public mutating func clear(newOrder: ((T, T) -> Bool)? = nil) {
+        if let _newOrder = newOrder { self.ordered = _newOrder }
         heap.removeAll(keepingCapacity: false)
     }
     
