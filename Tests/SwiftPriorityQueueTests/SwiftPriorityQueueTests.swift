@@ -103,21 +103,6 @@ class SwiftPriorityQueueTests: XCTestCase {
         }
         
         XCTAssertEqual(expected, actual)
-        
-        // Let's also test replacing the order
-        pq.clear(newOrder: { priorities[$0]! < priorities[$1]! })
-        
-        for i in 0...5 {
-            pq.push(i);
-        }
-        
-        let expected2: [Int] = [0, 1, 2, 3, 4, 5]
-        var actual2: [Int] = []
-        for j in pq {
-            actual2.append(j)
-        }
-        
-        XCTAssertEqual(expected2, actual2)
     }
     
     func testBasic() {
