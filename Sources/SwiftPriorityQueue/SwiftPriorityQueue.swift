@@ -85,12 +85,13 @@ public struct PriorityQueue<T: Comparable> {
     /// - returns: the discarded lowest priority element, or `nil` if count < maxCount
     public mutating func push(_ element: T, maxCount: Int) -> T? {
         precondition(maxCount > 0)
-        if maxCount <= count {
+        if count < maxCount {
             push(element)
-        } else { // heap.count > maxCount
-            // find the min priority element
-            if let discard = heap.min(by: ordered) {
-                if ordered(element, discard) { return element }
+        } else { // heap.count >= maxCount
+            // find the min priority element (ironically using max here)
+            if let discard = heap.max(by: ordered) {
+                if ordered(discard, element) { return element }
+                push(element)
                 remove(discard)
                 return discard
             }
