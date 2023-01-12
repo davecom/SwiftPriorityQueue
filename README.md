@@ -56,7 +56,7 @@ Or you can specify neither. By default a `PriorityQueue` is descending and empty
 ### Methods
 `PriorityQueue` has all of the standard methods you'd expect a priority queue data structure to have.
 * `push(element: T)` - Puts an element into the priority queue. O(lg n)
-* `push(element: T, maxHeap: Int)` - Attempts to put an element into an ‘inverted’ priority queue, with limitation on heap size. O(lg n)
+* `push(element: T, maxCount: Int) -> T?` - Adds an element while limiting the size of the priority queue to `maxCount`. If more than `maxCount` elements are in the priority queue, `maxCount - count` elements will be popped. Only the lowest priority items will be removed. The first element popped will be returned or `nil` if nothing is popped. O(n lg n)
 * `pop() -> T?` - Returns and removes the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(lg n)
 * `peek() -> T?` - Returns the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(1)
 * `clear()` - Removes all elements from the priority queue.
@@ -82,29 +82,26 @@ Note: `PriorityQueue` is *not* thread-safe (do not manipulate it from multiple t
 
 ### Limited Heap Size Example
 
-Two use cases in which you'll want to limit the heap size of a Priority Queue:
+Suppose you want to only keep the `maxCount` highest priority items in the priority queue.
 
-1. Bulk insertion of data where memory is constrained.
-2. Only the ‘head’ of the Priority Queue is relevant and the ‘tail’ can be ignored.
-
-In such cases, create an ‘inverted’ Priority Queue (where the sort is reversed) and use the `push(element: T, maxHeap: Int)` method to add items to the queue. For example, where you want to prioritize the first four(4) elements in ascending order:
+For example, say you only want the priority queue to ever have 4 elements:
 
 ```
-var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: false)  // inverted!
+var pq: PriorityQueue<Int> = PriorityQueue<Int>()
 let maxHeap = 4         
-                        // pq.reversed() output shown
-pq.push(4, maxHeap)     // [4]
-pq.push(5, maxHeap)     // [4, 5]
-pq.push(0, maxHeap)     // [0, 4, 5]
-pq.push(3, maxHeap)     // [0, 3, 4, 5]
-pq.push(6, maxHeap)     // [0, 3, 4, 5] (push of 6 is ignored)
-pq.push(1, maxHeap)     // [0, 1, 3, 4] (5 is discarded)
+
+pq.push(4, maxHeap)
+pq.push(5, maxHeap)
+pq.push(0, maxHeap)
+pq.push(3, maxHeap)  
+pq.push(6, maxHeap)     
+pq.push(1, maxHeap)     
 ```
 
-Note the use of `pq.reversed()` to show the values in ascending order.
+In this case, after 4 elements were pushed, only the largest elements were kept (because the order was `ascending`). So, the final priority queue has the elements 0, 1, 3, 4 in it. 
 
 ### Just for Fun - A* (`astar.swift`)
 A* is a pathfinding algorithm that uses a priority queue. The sample program that comes with SwiftPriorityQueue is a maze solver that uses A*. You can find some in-source documentation if you want to reuse this algorithm inside `astar.swift`.
 
 ## Authorship & License
-SwiftPriorityQueue is written by David Kopec and released under the MIT License (see `LICENSE`). You can find my email address on my GitHub profile page. I encourage you to submit pull requests and open issues here on GitHub.
+SwiftPriorityQueue is written by David Kopec (@davecom on GitHub) and released under the MIT License (see `LICENSE`). You can find my contact information on my GitHub profile page. I encourage you to submit pull requests and open issues here on GitHub. Thank you to all of the contributors over the years.
