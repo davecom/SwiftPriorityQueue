@@ -2,7 +2,7 @@
 //  SwiftPriorityQueue.swift
 //  SwiftPriorityQueue
 //
-//  Copyright (c) 2015-2019 David Kopec
+//  Copyright (c) 2015-2023 David Kopec
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -32,13 +32,18 @@
 public struct PriorityQueue<T: Comparable> {
     
     fileprivate(set) var heap = [T]()
-    private var ordered: (T, T) -> Bool
+    private let ordered: (T, T) -> Bool
     
+    /// Creates a new PriorityQueue using either the `>` operator or `<` operator to determine order.
+    /// The default order is descending if `ascending` is not specified.
+    ///
+    /// - parameter ascending: Use the `>` operator (`true`) or `<` operator (`false`).
+    /// - parameter startingValues: An array of elements to initialize the PriorityQueue with.
     public init(ascending: Bool = false, startingValues: [T] = []) {
         self.init(order: ascending ? { $0 > $1 } : { $0 < $1 }, startingValues: startingValues)
     }
     
-    /// Creates a new PriorityQueue with the given ordering.
+    /// Creates a new PriorityQueue with the given custom ordering function.
     ///
     /// - parameter order: A function that specifies whether its first argument should
     ///                    come after the second argument in the PriorityQueue.
@@ -55,14 +60,10 @@ public struct PriorityQueue<T: Comparable> {
         }
     }
     
-    /// How many elements the Priority Queue stores
-    ///
-    /// - Complexity: O(1)
+    /// How many elements the Priority Queue stores. O(1)
     public var count: Int { return heap.count }
     
-    /// true if and only if the Priority Queue is empty
-    ///
-    /// - Complexity: O(1)
+    /// true if and only if the Priority Queue is empty. O(1)
     public var isEmpty: Bool { return heap.isEmpty }
     
     /// Add a new element onto the Priority Queue. O(lg n)
@@ -73,21 +74,22 @@ public struct PriorityQueue<T: Comparable> {
         swim(heap.count - 1)
     }
     
-    /// Attempt to add a new element onto an 'inverted' Priority Queue, limiting its size. O(lg n)
-    ///
-    /// If the size limit has been reached and the element falls beyond the 'tail', it will be ignored.  If pushed, a single element at the 'tail' will be popped.
+    /// Add a new element onto a Priority Queue, limiting its size. O(n lg n)
+    /// If the size limit has been reached, `maxCount` - `count` elements will be popped.
     ///
     /// - parameter element: The element to be attempted insertion into the Priority Queue.
-    /// - parameter maxHeap: The Priority Queue will not grow further if its size >= maxHeap.
-    public mutating func push(_ element: T, maxHeap: Int) -> T? {
-        precondition(maxHeap > 0)
-        var discard: T?
-        if heap.count >= maxHeap {
-            if let peeked = peek(), !ordered(element, peeked) { return nil }
-            discard = pop()
-        }
+    /// - parameter maxCount: The Priority Queue will not grow further if its count >= maxCount.
+    /// - returns: the first element popped, or `nil` if no elements were popped
+    public mutating func push(_ element: T, maxCount: Int) -> T? {
+        precondition(maxCount > 0)
         push(element)
-        return discard
+        if heap.count >= maxCount {
+            var discard: T?
+            discard = pop()
+            while heap.count >= maxCount { pop() }
+            return discard
+        }
+        return nil
     }
 
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
@@ -120,7 +122,7 @@ public struct PriorityQueue<T: Comparable> {
         }
     }
     
-    /// Removes all occurences of a particular item. Finds it by value comparison using ==. O(n)
+    /// Removes all occurences of a particular item. Finds it by value comparison using ==. O(n^2)
     /// Silently exits if no occurrence found.
     ///
     /// - parameter item: The item to remove.
@@ -141,8 +143,7 @@ public struct PriorityQueue<T: Comparable> {
     }
     
     /// Eliminate all of the elements from the Priority Queue, optionally replacing the order.
-    public mutating func clear(newOrder: ((T, T) -> Bool)? = nil) {
-        if let _newOrder = newOrder { self.ordered = _newOrder }
+    public mutating func clear() {
         heap.removeAll(keepingCapacity: false)
     }
     
@@ -215,24 +216,20 @@ extension PriorityQueue: Collection {
     
     public var endIndex: Int { return heap.endIndex }
     
-    /// Return the element at specified position.
+    /// Return the element at specified position in the heap (not the order). O(1)
     ///
     /// - Parameter position:   the index of the element to retireve.
     ///                         **Must not be negative**
     ///                         and **must be less greater than **
     ///                         `endindex`.
-    /// - Complexity: O(log *n*) where *n* is the count of elements stored
-    ///               in the instance.
-    /// - Returns: the element at the specified position.
+    ///
+    /// - Returns: the element at the specified position in the heap.
     public subscript(position: Int) -> T {
         precondition(
             startIndex..<endIndex ~= position,
             "SwiftPriorityQueue subscript: index out of bounds"
         )
-        for (idx, element) in enumerated() where idx == position {
-            return element
-        }
-        preconditionFailure("SwiftPriorityQueue subscript: index out of bounds")
+        return heap[i]
     }
     
     public func index(after i: PriorityQueue.Index) -> PriorityQueue.Index {
