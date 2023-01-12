@@ -74,22 +74,27 @@ public struct PriorityQueue<T: Comparable> {
         swim(heap.count - 1)
     }
     
-    /// Add a new element onto a Priority Queue, limiting its size. O(n lg n)
-    /// If the size limit has been reached, `maxCount` - `count` elements will be popped.
+    /// Add a new element onto a Priority Queue, limiting the size of the queue. O(n^2)
+    /// If the size limit has been reached, the lowest priority element will be removed and returned.
+    /// Note that because this is a binary heap, there is no easy way to find the lowest priority
+    /// item, so this method can be inefficient.
+    /// Also note, that only one item will be removed, even if count > maxCount by more than one.
     ///
-    /// - parameter element: The element to be attempted insertion into the Priority Queue.
+    /// - parameter element: The element to be inserted into the Priority Queue.
     /// - parameter maxCount: The Priority Queue will not grow further if its count >= maxCount.
-    /// - returns: the first element popped, or `nil` if no elements were popped
+    /// - returns: the discarded lowest priority element, or `nil` if count < maxCount
     public mutating func push(_ element: T, maxCount: Int) -> T? {
         precondition(maxCount > 0)
-        push(element)
-        if heap.count >= maxCount {
-            var discard: T?
-            discard = pop()
-            while heap.count >= maxCount { pop() }
+        if maxCount <= count {
+            push(element)
+            return nil
+        } else { // heap.count > maxCount
+            // find the min priority element
+            var discard: T? = heap.min(by: ordered)
+            if ordered(element, discard) { return element }
+            remove(discard)
             return discard
         }
-        return nil
     }
 
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
