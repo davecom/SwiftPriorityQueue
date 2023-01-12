@@ -87,14 +87,15 @@ public struct PriorityQueue<T: Comparable> {
         precondition(maxCount > 0)
         if maxCount <= count {
             push(element)
-            return nil
         } else { // heap.count > maxCount
             // find the min priority element
-            var discard: T? = heap.min(by: ordered)
-            if ordered(element, discard) { return element }
-            remove(discard)
-            return discard
+            if let discard = heap.min(by: ordered) {
+                if ordered(element, discard) { return element }
+                remove(discard)
+                return discard
+            }
         }
+        return nil
     }
 
     /// Remove and return the element with the highest priority (or lowest if ascending). O(lg n)
@@ -234,7 +235,7 @@ extension PriorityQueue: Collection {
             startIndex..<endIndex ~= position,
             "SwiftPriorityQueue subscript: index out of bounds"
         )
-        return heap[i]
+        return heap[position]
     }
     
     public func index(after i: PriorityQueue.Index) -> PriorityQueue.Index {
