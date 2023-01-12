@@ -56,7 +56,7 @@ Or you can specify neither. By default a `PriorityQueue` is descending and empty
 ### Methods
 `PriorityQueue` has all of the standard methods you'd expect a priority queue data structure to have.
 * `push(element: T)` - Puts an element into the priority queue. O(lg n)
-* `push(element: T, maxCount: Int) -> T?` - Adds an element while limiting the size of the priority queue to `maxCount`. If more than `maxCount` elements are in the priority queue, `maxCount - count` elements will be popped. Only the lowest priority items will be removed. The first element popped will be returned or `nil` if nothing is popped. O(n lg n)
+* `push(element: T, maxCount: Int) -> T?` - Adds an element while limiting the size of the priority queue to `maxCount`. If more than `maxCount` elements are in the priority queue after the addition, the lowest priority element will be discarded and returned. Note this is inefficient because this is a binary heap, so only the highet priority item is efficient to retrieve. O(n)
 * `pop() -> T?` - Returns and removes the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(lg n)
 * `peek() -> T?` - Returns the element with the highest (or lowest if ascending) priority or `nil` if the priority queue is empty. O(1)
 * `clear()` - Removes all elements from the priority queue.
@@ -84,21 +84,21 @@ Note: `PriorityQueue` is *not* thread-safe (do not manipulate it from multiple t
 
 Suppose you want to only keep the `maxCount` highest priority items in the priority queue.
 
-For example, say you only want the priority queue to ever have 4 elements:
+For example, say you only want the priority queue to only ever have 4 elements:
 
 ```
 var pq: PriorityQueue<Int> = PriorityQueue<Int>()
-let maxHeap = 4         
+let maxCount = 4         
 
-pq.push(4, maxHeap)
-pq.push(5, maxHeap)
-pq.push(0, maxHeap)
-pq.push(3, maxHeap)  
-pq.push(6, maxHeap)     
-pq.push(1, maxHeap)     
+pq.push(4, maxCount: maxCount)
+pq.push(5, maxCount: maxCount)
+pq.push(0, maxCount: maxCount)
+pq.push(3, maxCount: maxCount)  
+pq.push(6, maxCount: maxCount)     
+pq.push(1, maxCount: maxCount)     
 ```
 
-In this case, after 4 elements were pushed, only the largest elements were kept (because the order was `ascending`). So, the final priority queue has the elements 0, 1, 3, 4 in it. 
+In this case, after 4 elements were pushed, only the smallest elements were kept (because the order was `ascending`). So, the final priority queue has the elements 0, 1, 3, 4 in it. 
 
 ### Just for Fun - A* (`astar.swift`)
 A* is a pathfinding algorithm that uses a priority queue. The sample program that comes with SwiftPriorityQueue is a maze solver that uses A*. You can find some in-source documentation if you want to reuse this algorithm inside `astar.swift`.
