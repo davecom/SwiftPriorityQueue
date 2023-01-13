@@ -2,7 +2,7 @@
 //  SwiftPriorityQueueTests.swift
 //  SwiftPriorityQueue
 //
-//  Copyright (c) 2015-2019 David Kopec
+//  Copyright (c) 2015-2023 David Kopec
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,59 @@ import Foundation
 #endif
 
 class SwiftPriorityQueueTests: XCTestCase {
+
+// Not sure who this test is relevant to. The Priority Queue only ensures orders of pops, other orders should not be
+// depended upon
+//    func testFastIteratingReturnsValuesInSameOrderOfIndexIteration() {
+//        var pq = PriorityQueue<Int>(order: <, startingValues: [1, 2, 3, 4, 5])
+//
+//        var fastIterationValues = [Int]()
+//        var iter = pq.makeIterator()
+//        while let element = iter.next() {
+//            fastIterationValues.append(element)
+//        }
+//
+//        var indexIterationValues = [Int]()
+//        for i in pq.startIndex..<pq.endIndex {
+//            indexIterationValues.append(pq[i])
+//        }
+//
+//        XCTAssertEqual(fastIterationValues, indexIterationValues)
+//
+//        // Let's also test with the other sort:
+//        fastIterationValues.removeAll(keepingCapacity: true)
+//        indexIterationValues.removeAll(keepingCapacity: true)
+//        pq = PriorityQueue<Int>(order: >, startingValues: [5, 4, 3, 2, 1])
+//
+//        iter = pq.makeIterator()
+//        while let element = iter.next() {
+//            fastIterationValues.append(element)
+//        }
+//
+//        var indexIterationValue = [Int]()
+//        for i in pq.startIndex..<pq.endIndex {
+//            indexIterationValue.append(pq[i])
+//        }
+//
+//        XCTAssertEqual(fastIterationValues, indexIterationValue)
+//    }
+    
+    func testIteratingViaIndexesValueSemantics() {
+        var pq = PriorityQueue<Int>(order: <, startingValues: [1, 2, 3, 4, 5])
+        var expectedHeap = pq.heap
+        for i in pq.indices {
+            let _ = pq[i]
+        }
+        XCTAssertEqual(pq.heap, expectedHeap)
+        
+        // Let's also test with the other sort:
+        pq = PriorityQueue<Int>(order: >, startingValues: [5, 4, 3, 2, 1])
+        expectedHeap = pq.heap
+        for i in pq.indices {
+            let _ = pq[i]
+        }
+        XCTAssertEqual(pq.heap, expectedHeap)
+    }
     
     func testCustomOrder() {
         let priorities = [0: 5000, 1: 4000, 2: 3000, 3: 2000, 4: 1000, 5: 0]
@@ -171,6 +224,51 @@ class SwiftPriorityQueueTests: XCTestCase {
         
         XCTAssertEqual(expected, actual)
     }
+
+    func testPushWithLimitAscending() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: false)
+        let maxCount = 4
+        XCTAssertNil(pq.push(4, maxCount: maxCount))
+        XCTAssert(Set([4]) == Set(pq))
+        XCTAssertNil(pq.push(5, maxCount: maxCount))
+        XCTAssert(Set([4, 5]) == Set(pq))
+        XCTAssertNil(pq.push(0, maxCount: maxCount))
+        XCTAssert(Set([0, 4, 5]) == Set(pq))
+        XCTAssertNil(pq.push(3, maxCount: maxCount))
+        XCTAssert(Set([0, 3, 4, 5]) == Set(pq))
+        XCTAssertEqual(pq.push(6, maxCount: maxCount), 6) // check first real discard
+        XCTAssert(Set([0, 3, 4, 5]) == Set(pq))
+        XCTAssertEqual(5, pq.push(1, maxCount: maxCount)) // check second discard
+        print(pq)
+        XCTAssert(Set([0, 1, 3, 4]) == Set(pq))
+    }
+    
+    func testPushWithLimitDescending() {
+        var pq: PriorityQueue<Int> = PriorityQueue<Int>(ascending: true)
+        let maxCount = 4
+
+        XCTAssertNil(pq.push(4, maxCount: maxCount))
+        XCTAssert(Set([4]) == Set(pq))
+
+        XCTAssertNil(pq.push(5, maxCount: maxCount))
+        XCTAssert(Set([4, 5]) == Set(pq))
+
+        XCTAssertNil(pq.push(2, maxCount: maxCount))
+        XCTAssert(Set([2, 4, 5]) == Set(pq))
+
+        XCTAssertNil(pq.push(3, maxCount: maxCount))
+        XCTAssert(Set([2, 3, 4, 5]) == Set(pq))
+
+        XCTAssertEqual(1, pq.push(1, maxCount: maxCount))
+        XCTAssert(Set([2, 3, 4, 5]) == Set(pq))
+
+        XCTAssertEqual(2, pq.push(6, maxCount: maxCount))
+        XCTAssert(Set([3, 4, 5, 6]) == Set(pq))
+
+        XCTAssertEqual(3, pq.push(6, maxCount: maxCount))
+        XCTAssert(Set([4, 5, 6, 6]) == Set(pq))
+
+    }
     
     static var allTests = [
         ("testCustomOrder", testCustomOrder),
@@ -182,5 +280,7 @@ class SwiftPriorityQueueTests: XCTestCase {
         ("testRemove", testRemove),
         ("testRemoveAll", testRemoveAll),
         ("testRemoveLastInHeap", testRemoveLastInHeap),
+        ("testPushWithLimitAscending", testPushWithLimitAscending),
+        ("testPushWithLimitDescending", testPushWithLimitDescending),
         ]
 }
