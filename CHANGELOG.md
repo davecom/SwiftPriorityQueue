@@ -1,3 +1,7 @@
+### 1.4.0
+- Added a push() with a size limit, removing the lowest priority item (thanks @reedes)
+- Added some asserts and tests (thanks @vale-cocoa)
+
 ### 1.3.1
 - Improvements to pop() performance (thanks @peteraisher)
 - Some basic performance tests (thanks @peteraisher)
